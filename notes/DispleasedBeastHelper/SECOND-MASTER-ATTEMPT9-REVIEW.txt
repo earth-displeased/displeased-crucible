@@ -1,0 +1,59 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 9 REVIEW (2026-11-14 11:26) - LEGENDARY
+=========================================================================
+Replay: SecondMastersBoard_BST50_Ta_Be_2026_11_14_11_26_30.log (last write 11:46:09; the recorder window still said
+"in progress" on the result screen - the fights are complete in the file).
+Versions live: BeastHelper 0.2.39, RSR 7.5.7.146, BMR 7.5.7.541.
+Difficulty: STANDARD (changed from First Degree). Route: left start -> Mindflayer, camp, Atomos ("MrHappy" route,
+https://www.youtube.com/watch?v=A-mep8xYcTg).
+Result: LEGENDARY, total 19,004 (screenshot 2026-11-14 114532). Performance 10,504 (Moves 100% 5,000, Elite x2 1,600,
+Enemy x4 1,000, Boss x1 1,000, Remaining HP 11,997 -> 1,904). Bonus 8,500: No Beast Left Behind 1,000, Unbeastable
+1,250, Starve the Fever 750, Beast Squad III 4,250, Walking Armory 500, Beastkin Gambit 750.
+
+FIGHTS (python scratch fights2.py)
+  Flauros      11:26:53  95s   857/s  player took 1,032
+  Mindflayer   11:29:30 101s   982/s  took 2,782 (11 ranged autos 1,521), 13s idle, longest gap 15.3s
+  Atomos       11:32:01  75s 1,405/s  took 1,705, no idle
+  Durga        11:33:43 106s   992/s  took 3,428 (Atomic Ray 1,764), 15s idle
+  Sphinx       11:37:41  51s + 7s     took 1,995
+  Gigantis     11:39:39  80s 2,006/s  took 1,590, no Damage Down
+  Lauda        11:43:25 108s 1,178/s  player took 1,223, familiars took 8,044 (attempt 8: player 5,916 autos alone)
+
+VALIDATED LIVE
+  * RSR 7.5.7.146 Lauda familiar tanking: Lauda on the familiars, player took 1,223 in 108s, no Gutting/Goring/Thunderbolt
+    Vulnerability Up. Lauda died in 108s (attempt 8: 251s, died at 39%).
+  * Gigantis slime priorities again clean (no Damage Down). No Unbeastable loss anywhere.
+
+USER-REPORTED ISSUES
+  1. Durga: the character left Spinner-rook Pieces before they died and came back later. CONFIRMED.
+     Rooks spawn 11:34:10 (4 x 8,284 HP) while Durga is untargetable. The player's target flipped between a rook ~3y away
+     and one ~27y away several times within 0.3s (11:34:17.8-18.1, 11:34:23.8-24.0, 11:34:44.0-45.1), and settled on the
+     far one each time: it left rooks at 1,625 / 1,172 / 279 HP and walked 20+y. Cause: the Durga module set ForcedTarget
+     to its own tracked rook (DurgaTargetPolicy, drops PendingDead rooks), and RSR picked its own rook (lowest HP, no
+     knowledge of rooks) - the same two-plugin fight seen at Lauda (23:11) and fixed there in BMR 541. Rook phase took 40s
+     (11:34:10-11:34:49.5) with 3.5-5.3s walking gaps between kills.
+  2. Mindflayer: strange pauses. CONFIRMED, two kinds.
+     a) Pull, 22s without an action (11:29:27-11:29:49). Mindflayer became targetable 11:29:22 at (120,-8), the player was
+        at (120,12). BeastHelper queued the approach, then handed movement to BMR at 11:29:27 with the player 14.5y away.
+        RSR only targets enemies in range, and SecondMasterCombatHints only walked to RSR's CURRENT target - no target, so
+        nothing moved. The boss auto-attacked from range (11 Thunder autos, 1,521) until RSR's Challenge at 11:29:49
+        acquired it (player 78%). This is the same root cause as the 17:14 run's 54s Mindflayer stand-still.
+     b) Arcane spheres, ~15s (11:30:11.6-11:30:26.9): ~5s standing 6.4y from the boss, then a legitimate dodge of the
+        tethered (10y wide) Dark Current lines from 11:30:16.3 until they resolved 11:30:26. Mostly correct.
+  Other pauses: Durga Thermobaric Charge corner bait 11:35:15.6-23.6 (8s, required).
+
+CHANGES (built and tested, NOT validated live) - BMR 7.5.7.542, RSR 7.5.7.147 (BeastHelper unchanged 0.2.39)
+  * BMR SecondMasterCombatHints: when the player has no usable target, walk toward the module's best target (highest BMR
+    priority >= 0, nearest on ties) instead of standing still. No ForcedTarget (RSR keeps choosing).
+  * BMR DurgaPiece: for BST, no ForcedTarget and no own rook goal; priorities only (rook 2, Durga 1). Other jobs unchanged.
+  * SecondMasterTargetPolicy (BMR file, linked into RSR and tests): Spinner-rook Piece 0x4CF8 tracked, priority 3 (RSR
+    urgent filter -> only rooks while any live). PreferNearest(rook).
+  * RSR SecondMasterTarget order: priority, then the CURRENT target (finish it), then nearest for rooks, then lowest HP.
+  * Tests PASS 1388 (3 new).
+  First Master untouched (all changes gated to zone 1343 / BST / Second Master preset).
+
+NEXT RUN
+  * Mindflayer: the character should walk to the boss right after it becomes targetable (no ~20s wait at the entrance).
+  * Durga rooks: one rook at a time, each to 0 before moving on, next rook the nearest one.
+  * No preset reselect needed.
+
+DEPLOYED 2026-11-14 12:03:51 (hashes verified): RSR 7.5.7.147 (backup backups\RSR-before-rooks-nearest-20261114-120351, 7.5.7.146), BMR 7.5.7.542 (backup backups\BossModReborn-before-durga-mindflayer-approach-20261114-120351, 7.5.7.541).

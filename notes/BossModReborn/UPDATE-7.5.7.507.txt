@@ -1,0 +1,5 @@
+Resurrection Test 2 / 7.5.7.507
+Fixed the module-loading gate: enabling the Resurrection checkbox permits ONLY this WIP module in territory849, duty653, bossOID0x2499. The global maturity filter remains unchanged for other encounters.
+The checkbox now refreshes pending/loaded module eligibility immediately. Explicit Supported fights disables are still respected.
+155 offline checks passed. Goldor controller source unchanged. Resurrection combat remains an opening test; later mechanics pause.
+The fixed installation path remains Resurrection-BMR-Test1; the folder name does not determine the build version.

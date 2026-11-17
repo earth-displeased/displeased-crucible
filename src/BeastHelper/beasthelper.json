@@ -1,0 +1,24 @@
+[
+  {
+    "Author": "Rin",
+    "Name": "BeastHelper",
+    "InternalName": "BeastHelper",
+    "AssemblyVersion": "0.2.0.0",
+    "Description": "Beastmaster helper: assists the 闘獣練 (Crucible of the Unbroken) loop — entry, team formation, whistle assignment, treasure/shop, and recovery items — and navigates to known recruit enemies from Beast Log data. Automation is experimental and off by default.",
+    "ApplicableVersion": "any",
+    "RepoUrl": "https://github.com/Rin-0617/BeastHelper",
+    "IconUrl": "https://raw.githubusercontent.com/Rin-0617/BeastHelper/main/images/icon.png",
+    "DalamudApiLevel": 15,
+    "Punchline": "Beastmaster Crucible auto-assist and recruit navigation.",
+    "Tags": [
+      "beastmaster",
+      "navigation",
+      "vnavmesh"
+    ],
+    "IsHide": false,
+    "IsTestingExclusive": false,
+    "DownloadLinkInstall": "https://github.com/Rin-0617/BeastHelper/releases/download/v0.2.0/BeastHelper-v0.2.0.zip",
+    "DownloadLinkUpdate": "https://github.com/Rin-0617/BeastHelper/releases/download/v0.2.0/BeastHelper-v0.2.0.zip",
+    "LastUpdate": 1792299693
+  }
+]

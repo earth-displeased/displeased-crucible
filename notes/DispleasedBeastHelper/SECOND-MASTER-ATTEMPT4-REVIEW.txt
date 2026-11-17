@@ -1,0 +1,16 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 4 (First Degree) - FAILED (died at Drake 17:58:28, revived by Ring; died at Durga 18:00:37)
+Replay SecondMastersBoard_BST50_Ta_Be_2026_11_13_17_52_20.log. BeastHelper 0.2.39 / RSR 7.5.7.142 / BMR 7.5.7.538.
+User: "the automation had a lot of misses in the drake fight". Review 2026-11-13 (Claude).
+
+CAUSE: my BMR 7.5.7.538 change. SecondMasterCombatHints called FirstMasterCombatHints.ApproachPriorityTarget, which sets
+ForcedTarget from BMR priorities, while RSR picks its own target on this board -> the target flipped every frame:
+  player target changes  Flauros 132 (attempt 3: 7)   Drake 112 (attempt 3: 24)
+e.g. 17:57:39.669 Abaddon / .678 Barbmole / .812 Abaddon / .820 Barbmole ...
+  Drake fight: 163s, idle 57s (attempt 3: 110s / 30s), player took 5,205 (2,349): Delusion Dust 1,898 (3), Unwitting
+  Wings 1,703 (28 hits, Wit's End stacks 5146), death 17:58:28. Durga: no familiar damage at all after the revive.
+
+FIX - BMR 7.5.7.539 (built, 0 errors / 6 known warnings; NOT deployed)
+SecondMasterCombatHints no longer sets ForcedTarget: it only adds the weak melee goal (weight 2) towards the player's
+current target, and only when that enemy's BMR priority is >= 0 (never towards forbidden/pointless targets such as
+Abaddon while Morphos live). Modules that set ForcedTarget themselves (Lauda) are untouched.
+DEPLOYED 20261113-180409 (game running): BMR 7.5.7.539, hashes = build. Backup: backups\BossModReborn-before-notargetforce-20261113-180409 (7.5.7.538).

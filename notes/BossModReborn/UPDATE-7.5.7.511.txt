@@ -1,0 +1,14 @@
+Resurrection Test 6 / 7.5.7.511
+234 offline checks passed, including the recorded Guardian MP-starvation failure. No live validation of this revised rotation yet.
+Reviewed replay 2026-11-06 22:36:35. Player completed 18 Pom Cures, 6 Blood Drains, 6 Diamondbacks, 13 Goblin Punches, 3 Breath of Magic and 2 Mortal Flames. Only one equipped burst cooldown, Feather Rain, was recorded. The final Guardian shield consumed the last MP and landed after the fatal cleaves.
+Changes:
+- Routine healing threshold 65% instead of 90%. Known raidwides and Guardian cleave deadlines still prepare health earlier.
+- Clean Guardian cleaves at >=28000 maximum HP use pre-healing and reserve a recovery GCD, rather than ten-second Diamondback roots every 15 seconds. Vulnerability or lower maximum HP retains Diamondback protection.
+- Guardian MP floor 3500 when clean; boss/other defensive phases retain 6000 for the paired shield sequence. Low-MP shield fallback requests recovery/MP rather than spinning on an unaffordable shield.
+- Safe Pure Light/Delta corner windows now allow offense instead of unconditional waiting. Sonic Boom fills ranged windows, while Goblin Punch uses conservative melee range.
+- Adds equipped damage cooldowns: Nightbloom, Sea Shanty, Shock Strike, Feather Rain/Eruption, Surpanakha, with compatible Glass Dance/Mountain Buster fallback. Shared cooldowns respected. Surpanakha starts with full charges and chains while safe; healing/defense can interrupt.
+- Mortal Flame on each target gets priority; Breath refresh remains. No automatic Moon Flute, channel lockout, or J Kick movement.
+- Game rejection checks prevent an unavailable/out-of-range action from blocking another available attack. Logs include the requested target.
+No spell-slot changes needed for the current recorded loadout.
+Entry, rewards, dialogue, retry remain manual. After reload /bmrai on once; RSR Off; empty AI preset; Healer Mimicry active.
+Remaining live validation: revised damage/survival balance, Guardian clear/enrage, post-add transition and repeat cycle. Full-clear support is not claimed.

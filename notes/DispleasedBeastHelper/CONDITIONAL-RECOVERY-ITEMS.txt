@@ -1,0 +1,18 @@
+BEASTHELPER0.2.25 - CONDITIONAL RECOVERY ITEMS
+User requested Crimson Ribbon serums plus cure items that restore HP.
+New enabled checkbox: Use cure items / Crimson Ribbon serums for healing.
+Uses the existing player recovery threshold (current profile60%) and familiar threshold(current50%). Player retains priority. Combat only; existing no-item score restrictions remain.
+
+Eligible items, verified in local XBMItem/Action sheets:
+- Crucible Antidote(item83/action46966):25% heal only with matching Poison cure.
+- Crucible Eye Drops(85/46968):25% heal only with matching Blind cure.
+- Crucible Needle(84/46967):50% heal only on a petrified living familiar, not player.
+- G1/G2 Antipoison, Antiparalysis, Antiblind, Antipetrification and Antisleep Soul Serums(items86-95):50% healing only with positively detected Crimson Ribbon ownership.
+Cure eligibility uses matching current debuff plus native use/range checks; it does not assume Esuna's dispel flag describes an item's ability to cure. Success can still depend on game-specific debuff rules.
+
+Ribbon ownership: detects icon243018(XBMItem18) in the visible owned-gear HUD identified by Beast Gear Effects or Crucible Items/Beast Gear captions. Does NOT count a shop or treasure-preview icon as ownership. If English owned-gear HUD cannot be read, skip Ribbon-dependent serums. Status displayed below the new checkbox. This new HUD ownership read still needs live validation.
+G1 can directly target the familiar. G2 uses self-centered area, only for familiar healing if the active familiar is within14 yalms (15-yalm effect, with margin). Native inventory/readiness/range checks remain required.
+Conditional items are considered before normal potions. Antiparalysis serums are tried last among Ribbon serums to preserve them when other choices exist. Regular potion fallback retained. No buying, looting or menu confirmations added. Cannot revive dead beasts.
+
+Build zero warnings/errors;1196 policy checks pass. Live confirmation still required for Ribbon detection, conditional cure success, G2 area recovery and actual item consumption. RSR7.5.7.130 and BMR7.5.7.528 unchanged.
+Temporary read-only addon probe used during development was removed from the final build.

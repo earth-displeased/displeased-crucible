@@ -1,0 +1,8 @@
+KNIGHT HANDOFF AND EMERGENCY STOP UPDATE
+BeastHelper 0.2.14 / BMR Crucible Assist 5 (7.5.7.517) / RSR First Board Assist 3 (7.5.7.117)
+The first load starts STOPPED. Use /beasthelper resume or Resume saved settings explicitly when ready.
+Emergency stop: /beasthelper stop, STOP ALL AUTOMATION in Crucible tab, or the title-bar Stop icon.
+Stop persists in saved config and blocks framework automation, profile enforcement, recovery, roster, item and menu processing. It clears approach navigation, Lua and AutoDuty work, clears BMR movement/AI explicitly, and sends a direct RSR stop. The paired RSR also checks the stop latch each frame. It does not abandon the duty. Resume is explicit. Turning Automatic combat off also invokes Stop.
+First fight: knight is primary while alive; bishop follows. During visible or hidden parry, RSR holds offensive actions from the shielded front, summons a ready pet if absent, and uses Snarl. The active pet is retained throughout guard; it is not dismissed to advance the burst sequence and Wespe's finisher is withheld during guard. BMR waits for a nonzero knight target other than the player before adding the rear goal. While waiting, genuine encounter hazard dodges remain active, but the rotating shield is not chased. Challenge only follows guard ending.
+RSR startup and stop use direct local IPC where possible to avoid damaged chat-command registration. Only one RSR and one BMR may be loaded. No changes to the no-item, manual rewards/shop restrictions.
+Tests: BeastHelper and RSR compile clean; BMR six existing obsolete warnings. 38 score/stop/sequencing checks and 277 BMR policy/geometry checks passed. Live aggro behavior and in-combat Stop still require verification; offline checks do not establish a complete clear.

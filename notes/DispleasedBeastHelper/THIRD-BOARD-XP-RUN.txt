@@ -1,0 +1,10 @@
+BeastHelper 0.2.28.0 - Third Board XP Run
+
+Choose Third Board XP Run in Crucible > Roster mode (also available in Combat only).
+Selecting it enables roster/whistle selection, selects Third Board capacity 14, and disables the exactly-three-beast score restriction. Combat, healing and dodge switches retain your choices. Manual entry, fight starts, reward choices and shops remain manual. Select Standard difficulty yourself in the game.
+
+Before entry: captured Cu Sith, Buffalo and Coeurl are fixed in the roster; the other 11 positions are filled by the lowest known current ranks among your other captured beasts. Ties use bestiary number. No duplicates. Unknown candidate ranks pause roster edits; open the bestiary to let the enabled rank scan refresh them. Fewer than 14 captured beasts uses those available; missing core beasts stops preparation.
+
+During the duty: the entered roster is retained even as beasts gain ranks. Usual Cu Sith/Buffalo/Coeurl battlehorn selection and paired Third Board combat behavior continue. Extra low-rank beasts are carried for XP rather than substituted into combat just because they are low rank. Current-dungeon roster cannot be expanded: choose this mode and prepare the full roster before the next entry.
+
+Installed only BeastHelper; RSR and BMR builds unchanged. Build passed without warnings/errors. Tests passed: 500 existing exhaustive class-min/max scenarios, new XP roster scenarios, and 1234 score/selection/policy checks. Live roster callbacks still need confirmation on the next entry screen. Previous build backed up.

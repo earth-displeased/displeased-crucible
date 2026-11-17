@@ -1,0 +1,1 @@
+250 offline checks passed; build succeeded with 6 existing obsolete-API warnings. Newly added mechanics require a recorded live attempt.

@@ -1,0 +1,31 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 3 (First Degree) - FAILED at Lauda (player died 17:47:03, Lauda 32.8%)
+Replay SecondMastersBoard_BST50_Ta_Be_2026_11_13_17_24_08.log. BeastHelper 0.2.38 / RSR 7.5.7.142 / BMR 7.5.7.537
+(7.5.7.538 melee goal was built but NOT deployed). Food eaten (max HP 8,272 at Lauda). Review 2026-11-13 (Claude).
+Route: Flauros, Drake group (Move 4 Middle), Durga, Sphinx, Gigantis, Lauda.
+
+  Fight      dur   dealt/s  player took  idle
+  Flauros     98s  1,010     1,797        6s   Erratic Blaster covered again (no hit)
+  Drake      110s  1,176     2,349       30s
+  Durga      117s  1,030     6,347        7s   Atomic Ray 4,538 -> 391 HP (5.6%), survived
+  Sphinx      74s  ~1,500    2,156        0s
+  Gigantis   101s  1,285       179        4s   Damage Down 4874 at 17:40:20 (Congealed Lightning 49373)
+  Lauda      283s    576     8,987       43s   death; Vulnerability Up 1789 from Thanatos Infernal Pain (50541)
+
+VALIDATED LIVE
+- Lauda Unseen Force (BMR 7.5.7.537): both throws (17:44:01, 17:45:02) with the player in the south pocket
+  (519.2,-441.6 / 520.8,-441.6) facing north (0.04 / -0.02) - stayed on the platform, no Burns.
+- Flauros Erratic Blaster cover (RSR 7.5.7.142): 2 of 2 runs.
+
+CAUSES
+- Atomic Ray: cast started at 4,929/6,980 HP = 70.6%, just above the 70% trigger -> no heal.
+- Lauda: potions on Coeurl at 17:43:07 (grade 3) and 17:43:36 (grade 2); from 17:44:45 no player heal left; HP 2,415
+  -> 797 by autos, then Infernal Pain 922. Lauda 59,883/182,653 HP left; Thanatos #2 at 64%.
+- Unbeastable lost twice: Gigantis Rupture Lightning Damage Down; Thanatos Infernal Pain Vulnerability Up (unknown if
+  avoidable - first Thanatos died 2s after its Infernal Pain hit at 17:44:06).
+
+CHANGE - BeastHelper 0.2.39 (built and tested, PASS 1366; NOT deployed)
+- Atomic Ray: during the cast heal while HP < 5,300 (largest hit 4,538 +~15%), as a percent of max HP.
+- No familiar potions while Lauda is alive (Second Master preset, territory 1343).
+PENDING DEPLOY: BMR 7.5.7.538 (Second Master melee goal, attempt 2 review) + BeastHelper 0.2.39.
+OPEN: Gigantis Rupture Lightning, Thanatos Infernal Pain (Vulnerability Up), Lauda idle 43s / long fight.
+DEPLOYED 20261113-175106 (game running): BeastHelper 0.2.39 + BMR 7.5.7.538, hashes = build. Backups: backups\{BeastHelper,BossModReborn}-before-secondmaster-attempt3-20261113-175106 (0.2.38 / 7.5.7.537).

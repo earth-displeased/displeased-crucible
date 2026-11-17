@@ -1,0 +1,66 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 1 (First Degree) - FAILED at Lauda (player died 17:02:21)
+Replay SecondMastersBoard_BST50_Ta_Be_2026_11_13_16_41_17.log. BeastHelper 0.2.37 (Second Master Legendary preset) /
+RSR 7.5.7.141 / BMR 7.5.7.536. Review 2026-11-13 (Claude). User: no food eaten; recommended route not followed.
+
+FIGHTS (route taken: Flauros, Boogyman (Move 3 Right random), Durga, Sphinx, Gigantis, Lauda)
+  Fight      dur   dealt/s  player took  idle  notes
+  Flauros    103s  1,014     3,698        15s  Erratic Blaster 1,971 (1 hit, single target)
+  Boogyman   142s    804     5,296        41s  Feral Leap 1,585 (6), Veil of Darkness 1,011
+  Durga      193s    641    11,053        24s  autos 6,427 (19 hits, avg 338 - no food); Atomic Ray 4,130 -> DEATH 16:50:35
+  Sphinx      80s  ~1,400    2,191         0s
+  Gigantis   119s  1,598     2,842        18s
+  Lauda      112s    577     3,840+Burns  16s  DEATH 17:02:21
+Behemoth did not fight after Durga.
+
+DURGA DEATH + RING OF SACRIFICE
+Atomic Ray (13s cast 16:50:22.5) hit the player for 4,130 at 16:50:35.5 and killed them. Cu Sith was summoned 16:50:25 and
+released 47092/47093 within 1.4s, so no familiar was out to cover. At 16:50:36.1 Behemoth was summoned and immediately
+DIE+ and the player got statuses 43/418 at 16:50:38.9: the Ring of Sacrifice revived the player by sacrificing Behemoth
+(Behemoth absent for the rest of the board). Atomic Ray is a raidwide like Strix Darkness - likely coverable by Snarl
+(not yet verified on this board).
+
+LAUDA DEATH (user: "hit by an attack that knocked me out of the arena")
+Unseen Force: 49484 cast, player status 5341 at 17:01:57.2, icon 276 at 17:02:04.2; Shockwave 49489 at 17:02:09.29 threw
+the player from (516.6,-425.4) to (498.0,-456.9) - about 36y, direction atan2 = -2.59 rad, i.e. directly BEHIND the
+player's facing (0.55 rad). The module's arena is x 510-530 / z -440..-400 plus small extensions; any 40y knockback
+leaves it except along the long axis. Off the platform: Burns (3065/3066) 4,458 -> 0 HP in 12s.
+BMR UnseenForce component predicts the knockback from the player's rotation captured when 5341 is gained (+180 if the
+player faces away from Lauda). Not verified; the player's facing changes while attacking. Needs work.
+
+NEXT
+- RSR: Second Master cover list (Durga Atomic Ray, Flauros Erratic Blaster, Lauda Thunderbolt / Beastly Aura - to verify),
+  gated by a new Second Master IPC from BeastHelper; no release while a cover cast is pending.
+- BMR Lauda Unseen Force: model the knockback direction correctly and position/face so it stays on the platform.
+- User: eat food; follow the route.
+
+CORRECTIONS / FINDINGS AFTER DEEPER ANALYSIS
+- Durga Atomic Ray: the BMR module says "Raidwide - Pet cover does not work" -> not added to covers. At Durga the player
+  held only a Crucible Antidote (heals 25% per Eorzean Tavern) and was below 55% from 16:49:08 until the death; the
+  poison-only rule never used it.
+- Lauda Unseen Force: the module's model fits the replay - throw = facing + 180 (Lauda faced the player at the status
+  gain: rot -2.22 vs player 0.92); facing 0.55 at 17:02:09.29 -> thrown along -2.59. Icy Veins: the throw spans pocket to
+  pocket; forum: being thrown out means running back through lava. Burns kept ticking after the player was back on the
+  platform (17:02:16.5) until death.
+
+CHANGES (built and tested, PASS 1364; NOT deployed, NOT validated live)
+BMR 7.5.7.537
+  - LaudaUnseenForcePolicy (new, pure): 45y throw, end pockets (520,-397.5)/(520,-442.5), throw direction, safe facing.
+  - LaudaTheSpellcleaver UnseenForce.AddAIHints: while marked, goal = nearer end pocket (weight 100) and forbidden facings
+    for every throw that would cross the arena edge (ArenaBoundsCustom.AddForbiddenDirections, activation = status
+    expiry). SmartRotationTweak turns the player.
+  - IPC Crucible.SecondMaster.FacingImminent (zone 1343, Lauda module, forbidden direction within 1.5s).
+RSR 7.5.7.142
+  - FirstBoardScoreIntegration.SecondMaster (IPC BeastHelper.SecondMasterLegendaryActive, territory 1343), MasterBoard,
+    ReserveSecondMasterFacing; ActionUpdater.CanDoAction holds actions while BMR reports the facing window.
+  - SecondMasterDefensePolicy (new): cover Flauros Erratic Blaster (0x4CDB/49188).
+  - BST_Reborn: cover hold, cover casts and the First Master damage-sharing rule (Cover/TakeBack) now apply on
+    MasterBoard (First or Second Master preset). First Master behaviour unchanged.
+BeastHelper 0.2.38
+  - IPC BeastHelper.SecondMasterLegendaryActive.
+  - CrucibleItemTimingPolicy.RecoveryThreshold: 70% while Durga casts Atomic Ray (Second Master preset, 1343).
+  - CrucibleItemTimingPolicy.AntidoteAsLastResortHeal: Crucible Antidote used as a heal when nothing else is usable.
+DEPLOYED 2026-11-13 17:14:49 (game running; all three hot-reloaded 17:14:53-56; hashes = build). Backups:
+backups\{BeastHelper,RotationSolver,BossModReborn}-before-secondmaster-fixes-20261113-171449 (0.2.37 / 7.5.7.141 / 7.5.7.536).
+NEXT RUN: watch Lauda Unseen Force (player should go to an end pocket and face along the long axis at the throw),
+"[First Master defense] Preparing pet cover ... cast 49188" at Flauros, "[Second Master] Used Crucible Antidote" if no
+potions remain, and a heal during Durga's Atomic Ray cast below 70%. Eat food; follow the route.

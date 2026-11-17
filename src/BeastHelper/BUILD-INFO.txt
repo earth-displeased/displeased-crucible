@@ -1,0 +1,5 @@
+BeastHelper upstream commit: be40a1ebf504ed540e3b1e83607826e4a8265c67
+RinUi commit: b1765f470583d115043807dcef4e2036263d6174
+.NET SDK: 10.0.403
+Dalamud.NET.Sdk: 15.0.0
+Build: Release; zero warnings / errors

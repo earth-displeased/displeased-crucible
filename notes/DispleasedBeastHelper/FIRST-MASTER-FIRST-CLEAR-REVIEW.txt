@@ -1,0 +1,38 @@
+FIRST MASTER FIRST DEGREE - FIRST RECORDED CLEAR (rank: Apex, not Legendary)
+Replay: FirstMastersBoard_BST50_Ta_Be_2026_11_12_23_35_38.log (BeastHelper 0.2.36 / RSR 7.5.7.139 / BMR 7.5.7.535)
+Review date: 2026-11-13 (Claude). Clear validated live (user report + Borgny DIE+ 23:58:21, player alive, HP 4,542/8,369).
+(The preceding replay 23:22:09 was a failed attempt: player dead 23:35:05.)
+
+FIGHTS (route Strix, Corpse Flower, Gargoyle, Treant, Borgny)
+  Fight          dur   dealt/s  player took  idle   vs 22:49 run
+  Strix           92s   732      3,382       12s    -
+  Corpse Flower  130s   885      3,801       25s    -
+  Gargoyle       136s   623      4,740       32s    181s / 74s idle before
+  Treant          85s  1,572       869        0s    134s before
+  Borgny        ~236s  792/631   4,676       47s    (two targetable windows; untargetable ~30s at each mass)
+
+0.2.36 CHANGES VALIDATED LIVE
+- Melee goal: Gargoyle idle 74s -> 32s, fight 181s -> 136s; Treant 0s idle.
+- Snarl cover: "Preparing pet cover" for Sweeping Evisceration x2, Grim Fate, Toxic Vomit x3, Salivous Snap. Borgny Toxic
+  Vomit: pets took 4,638, player 1,596 (22:49: player 3,758). Salivous Snap still hit the player once (829).
+- G2 Antipoison serum used automatically at the pull (23:54:28).
+- Tome of the Impervious: requested without range check at 23:42:06 and 23:57:23; Blink (status 4849) followed each time
+  within ~1s. The unchecked retry works.
+- Toxic Mass: both killed (13,800 and 13,605 dealt); first died 7.3s after spawn, second 14.8s. No Noxious Explosion.
+- Treant: no Biloko spawned this run (finish rule not exercised).
+
+APEX VS LEGENDARY - OPEN
+Legendary minimum 18,750 points (consolegameswiki). Score = nodes, remaining HP, bonuses. Bonus meanings found online
+(fullboosts.com, eorzeantavern.com; Patch 7.57 notes):
+- No Beast Left Behind (1,000): no familiar incapacitated. Familiars reached 0 HP several times this run (e.g. Coeurl
+  23:40:46, Behemoth 23:43:30, Cu Sith 23:56:42) - likely lost, unless 0 HP there is a release, not a KO.
+- Unbeastable (1,250): no Damage Down / Vulnerability Up suffered. Not checked (status ids unknown here).
+- Sleepless Survival (1,000, raised from 375 in 7.57): no campsite rest. Camps are manual - user knows.
+- Starve the Fever: probably no feeding; value unknown. Economic Ethos: no definition found.
+- First Degree 4,000; Beast Squad III (1-3 familiars) 4,250.
+User: score was just over 18,000 (~750 short); result screen closed, bonus breakdown not recorded.
+Checked for cheap gains, none found:
+- Salivous Snap 829 hit the player despite "Preparing pet cover" (23:57:15): no familiar was out (Cu Sith gone 23:56:42),
+  so Snarl had nothing to cover with. A faster re-summon could help but would interact with the Toxic Mass burst hold.
+- No recovery items left at the end (diagnostic: none held from 23:57:33), so nothing could be spent for remaining HP.
+No code changes after this run. Next attempt: same build; record the result screen (total + bonuses) before closing.

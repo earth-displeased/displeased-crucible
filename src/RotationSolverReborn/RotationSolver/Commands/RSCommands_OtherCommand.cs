@@ -1,0 +1,557 @@
+﻿using ECommons.DalamudServices;
+using ECommons.Logging;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using RebornMaterial;
+using RotationSolver.Basic.Configuration;
+using RotationSolver.Basic.Rotations.Duties;
+using RotationSolver.Data;
+using RotationSolver.Updaters;
+using System.Globalization;
+
+namespace RotationSolver.Commands;
+
+public static partial class RSCommands
+{
+	public static void DoOtherCommand(OtherCommandType otherType, string str)
+	{
+		switch (otherType)
+		{
+			case OtherCommandType.Cycle:
+				ExecuteCycleCommand();
+				break;
+
+			case OtherCommandType.Rotations:
+				ExecuteRotationCommand(str);
+				break;
+
+			case OtherCommandType.DutyRotations:
+				ExecuteDutyRotationCommand(str);
+				break;
+
+			case OtherCommandType.DoActions:
+				DoActionCommand(str);
+				break;
+
+			case OtherCommandType.ToggleActions:
+				ToggleActionCommand(str);
+				break;
+
+			case OtherCommandType.Settings:
+				DoSettingCommand(str);
+				break;
+
+			case OtherCommandType.NextAction:
+				DoAction();
+				break;
+
+			case OtherCommandType.Control:
+				RotationSolverPlugin.ToggleStateControlWindow();
+				break;
+
+			case OtherCommandType.Changelog:
+				RotationSolverPlugin.OpenChangelog();
+				break;
+		}
+	}
+
+	private static void ExecuteCycleCommand()
+	{
+		if (Service.Config.CycleType == CycleType.CycleNormal)
+		{
+			CycleStateWithOneTargetTypes();
+		}
+		else if (Service.Config.CycleType == CycleType.CycleAllAuto)
+		{
+			CycleStateWithAllTargetTypes();
+		}
+		else if (Service.Config.CycleType == CycleType.CycleAuto)
+		{
+			CycleStateAuto();
+		}
+		else if (Service.Config.CycleType == CycleType.CycleManual)
+		{
+			CycleStateManual();
+		}
+		else if (Service.Config.CycleType == CycleType.CycleManualAuto)
+		{
+			CycleStateManualAuto();
+		}
+	}
+
+	private static void ExecuteRotationCommand(string str)
+	{
+		var customCombo = DataCenter.CurrentRotation;
+		if (customCombo == null)
+		{
+			return;
+		}
+
+		DoRotationCommand(customCombo, str);
+	}
+
+	private static void ExecuteDutyRotationCommand(string str)
+	{
+		var dutyRotation = DataCenter.CurrentDutyRotation;
+		if (dutyRotation == null)
+		{
+			return;
+		}
+
+		DoDutyRotationCommand(dutyRotation, str);
+	}
+
+	private static void DoSettingCommand(string str)
+	{
+		var strs = str.Trim().Split(' ', 2, StringSplitOptions.TrimEntries);
+		var settingName = strs[0];
+		var command = strs.Length > 1 ? strs[1] : null;
+
+		if (string.IsNullOrEmpty(settingName))
+		{
+			Svc.Chat.PrintError("Invalid setting command format.");
+			return;
+		}
+
+		if (settingName.Equals("TargetingTypes", StringComparison.OrdinalIgnoreCase))
+		{
+			HandleTargetingTypesCommand(command);
+			return;
+		}
+
+		UpdateSetting(settingName, command);
+	}
+
+	private static void UpdateSetting(string settingName, string? command)
+	{
+		PropertyInfo[] properties = [.. typeof(Configs).GetRuntimeProperties()];
+		for (var i = 0; i < properties.Length; i++)
+		{
+			var property = properties[i];
+			var getMethod = property.GetMethod;
+			if (getMethod == null || !getMethod.IsPublic)
+			{
+				continue;
+			}
+
+			if (!settingName.Equals(property.Name, StringComparison.OrdinalIgnoreCase))
+			{
+				continue;
+			}
+
+			var type = property.PropertyType == typeof(ConditionBoolean) ? typeof(bool) : property.PropertyType;
+			if (!TryConvertValue(type, command, out var convertedValue))
+			{
+				if (property.GetValue(Service.Config) is ConditionBoolean config)
+				{
+					config.Value = !config.Value;
+					convertedValue = config.Value;
+				}
+				else
+				{
+					Svc.Chat.PrintError("Failed to parse the value.");
+					return;
+				}
+			}
+
+			if (property.PropertyType == typeof(ConditionBoolean))
+			{
+				if (convertedValue is bool boolValue)
+				{
+					var relay = (ConditionBoolean)property.GetValue(Service.Config)!;
+					relay.Value = boolValue;
+					convertedValue = relay;
+				}
+				else
+				{
+					Svc.Chat.PrintError("Failed to parse the value as boolean.");
+					return;
+				}
+			}
+
+			property.SetValue(Service.Config, convertedValue);
+			command = FormatSettingValue(convertedValue);
+
+			if (Service.Config.ShowToggledSettingInChat)
+			{
+				Svc.Chat.Print($"Changed setting {property.Name} to {command}");
+			}
+
+			return;
+		}
+
+		Svc.Chat.PrintError("Failed to find the config in this rotation, please check it.");
+	}
+
+	private static bool TryConvertValue(Type type, string? command, out object? convertedValue)
+	{
+		convertedValue = null;
+		if (type.IsEnum)
+		{
+			return Enum.TryParse(type, command, ignoreCase: true, out convertedValue);
+		}
+
+		if (type == typeof(Vector2) || type == typeof(Vector2Int) || type == typeof(Vector4))
+		{
+			return TryParseVector(type, command, out convertedValue);
+		}
+
+		if (type == typeof(float))
+		{
+			Span<float> number = stackalloc float[1];
+			if (!TryParseNumbers(command ?? string.Empty, [' '], CultureInfo.InvariantCulture, number)
+				&& !TryParseNumbers(command ?? string.Empty, [' '], CultureInfo.CurrentCulture, number))
+			{
+				return false;
+			}
+
+			convertedValue = number[0];
+			return true;
+		}
+
+		try
+		{
+			convertedValue = Convert.ChangeType(command, type);
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+
+	internal static string? FormatSettingValue(object? value)
+	{
+		return value switch
+		{
+			Vector2 v => v.ToString(null, CultureInfo.InvariantCulture),
+			Vector4 v => v.ToString(null, CultureInfo.InvariantCulture),
+			Vector2Int v => $"<{v.X}, {v.Y}>",
+			float f => f.ToString(CultureInfo.InvariantCulture),
+			_ => value?.ToString(),
+		};
+	}
+
+	private static bool TryParseVector(Type type, string? command, out object? convertedValue)
+	{
+		convertedValue = null;
+		if (string.IsNullOrWhiteSpace(command))
+		{
+			return false;
+		}
+
+		if (type == typeof(Vector4) && M3ColorMath.TryParseHex(command, out var color))
+		{
+			convertedValue = color;
+			return true;
+		}
+
+		var text = command.Trim().Trim('<', '>', '(', ')', '[', ']');
+		Span<float> values = stackalloc float[type == typeof(Vector4) ? 4 : 2];
+
+		if (!TryParseNumbers(text, [',', ';', ' ', '\t'], CultureInfo.InvariantCulture, values)
+			&& !TryParseNumbers(text, [';', ' ', '\t'], CultureInfo.CurrentCulture, values))
+		{
+			return false;
+		}
+
+		convertedValue = values.Length == 4 ? new Vector4(values[0], values[1], values[2], values[3])
+			: type == typeof(Vector2Int) ? new Vector2Int((int)MathF.Round(values[0]), (int)MathF.Round(values[1]))
+			: new Vector2(values[0], values[1]);
+		return true;
+	}
+
+	private static bool TryParseNumbers(string text, char[] separators, CultureInfo culture, Span<float> values)
+	{
+		var parts = text.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+		if (parts.Length != values.Length)
+		{
+			return false;
+		}
+
+		for (var i = 0; i < parts.Length; i++)
+		{
+			if (!float.TryParse(parts[i], NumberStyles.Float, culture, out values[i]) || !float.IsFinite(values[i]))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static void HandleTargetingTypesCommand(string? command)
+	{
+		if (string.IsNullOrEmpty(command))
+		{
+			Svc.Chat.PrintError("Invalid command for TargetingTypes.");
+			return;
+		}
+
+		var commandParts = command.Split(' ', 2);
+		if (commandParts.Length < 1)
+		{
+			Svc.Chat.PrintError("Invalid command format for TargetingTypes.");
+			return;
+		}
+
+		var action = commandParts[0];
+		var value = commandParts.Length > 1 ? commandParts[1] : null;
+
+		switch (action.ToLower())
+		{
+			case "add":
+				AddTargetingType(value);
+				break;
+
+			case "remove":
+				RemoveTargetingType(value);
+				break;
+
+			case "removeall":
+				Service.Config.TargetingTypes.Clear();
+				if (DataCenter.IsActivated())
+				{
+					Svc.Chat.Print("Removed all TargetingTypes and reset to default list.");
+				}
+				else
+				{
+					Svc.Chat.Print("Removed all TargetingTypes.");
+				}
+				break;
+
+			default:
+				Svc.Chat.PrintError("Invalid action for TargetingTypes.");
+				break;
+		}
+
+		Service.Config.Save();
+	}
+
+	private static void AddTargetingType(string? value)
+	{
+		if (string.IsNullOrEmpty(value) || !Enum.TryParse(typeof(TargetingType), value, true, out var parsedEnumAdd))
+		{
+			Svc.Chat.PrintError("Invalid TargetingType value.");
+			return;
+		}
+
+		var targetingTypeAdd = (TargetingType)parsedEnumAdd;
+		if (!Service.Config.TargetingTypes.Contains(targetingTypeAdd))
+		{
+			Service.Config.TargetingTypes.Add(targetingTypeAdd);
+			Svc.Chat.Print($"Added {targetingTypeAdd} to TargetingTypes.");
+		}
+		else
+		{
+			Svc.Chat.Print($"{targetingTypeAdd} is already in TargetingTypes.");
+		}
+	}
+
+	private static void RemoveTargetingType(string? value)
+	{
+		if (string.IsNullOrEmpty(value) || !Enum.TryParse(typeof(TargetingType), value, true, out var parsedEnumRemove))
+		{
+			Svc.Chat.PrintError("Invalid TargetingType value.");
+			return;
+		}
+
+		var targetingTypeRemove = (TargetingType)parsedEnumRemove;
+		if (Service.Config.TargetingTypes.Contains(targetingTypeRemove))
+		{
+			_ = Service.Config.TargetingTypes.Remove(targetingTypeRemove);
+			Svc.Chat.Print($"Removed {targetingTypeRemove} from TargetingTypes.");
+		}
+		else
+		{
+			Svc.Chat.Print($"{targetingTypeRemove} is not in TargetingTypes.");
+		}
+	}
+
+	private static IAction[] GetCommandableActions()
+	{
+		var rotationActions = RotationUpdater.CurrentRotationActions;
+		var dutyActions = RotationUpdater.CurrentDutyRotationActions;
+
+		List<IAction> allActions = new(rotationActions.Length + dutyActions.Length);
+		HashSet<IAction> seen = [];
+		AddActions(rotationActions);
+		AddActions(dutyActions);
+		return [.. allActions];
+
+		void AddActions(IAction[] actions)
+		{
+			foreach (var action in actions)
+			{
+				if (action is IBaseAction baseAction && baseAction.Info.IsPvP != DataCenter.IsPvP)
+				{
+					continue;
+				}
+
+				if (seen.Add(action))
+				{
+					allActions.Add(action);
+				}
+			}
+		}
+	}
+	private static void ToggleActionCommand(string str)
+	{
+		var trimStr = str.Trim();
+		var allActions = GetCommandableActions();
+
+		var n = allActions.Length;
+		var sortedActions = new IAction[n];
+		Array.Copy(allActions, sortedActions, n);
+		for (var i = 0; i < n - 1; i++)
+		{
+			for (var j = 0; j < n - i - 1; j++)
+			{
+				if (sortedActions[j].Name.Length < sortedActions[j + 1].Name.Length)
+				{
+					(sortedActions[j + 1], sortedActions[j]) = (sortedActions[j], sortedActions[j + 1]);
+				}
+			}
+		}
+
+		for (var i = 0; i < n; i++)
+		{
+			var act = sortedActions[i];
+			if (trimStr.Equals(act.Name, StringComparison.OrdinalIgnoreCase))
+			{
+				act.IsEnabled = !act.IsEnabled;
+				if (Service.Config.ShowToggledSettingInChat)
+				{
+					Svc.Chat.Print($"Toggled {act.Name} : {act.IsEnabled}");
+				}
+				return;
+			}
+			if (trimStr.StartsWith(act.Name + " ", StringComparison.OrdinalIgnoreCase))
+			{
+				var flag = trimStr[act.Name.Length..].Trim();
+				act.IsEnabled = bool.TryParse(flag, out var parse) ? parse : !act.IsEnabled;
+				if (Service.Config.ShowToggledSettingInChat)
+				{
+					Svc.Chat.Print($"Toggled {act.Name} : {act.IsEnabled}");
+				}
+				return;
+			}
+		}
+	}
+
+	public static void DoActionCommand(string str)
+	{
+		str = str.Trim();
+		CommandTarget? target = null;
+		var tagStart = str.EndsWith('>') ? str.LastIndexOf('<') : -1;
+		if (tagStart >= 0)
+		{
+			target = ResolveCommandTarget(str[(tagStart + 1)..^1].Trim());
+			str = str[..tagStart].TrimEnd();
+		}
+
+		var lastHyphenIndex = str.LastIndexOf('-');
+		if (lastHyphenIndex == -1 || lastHyphenIndex == str.Length - 1)
+		{
+			Svc.Chat.PrintError(UiString.CommandsInsertActionFailure.GetDescription());
+			return;
+		}
+
+		var actName = str[..lastHyphenIndex].Trim();
+		var timeStr = str[(lastHyphenIndex + 1)..].Trim();
+
+		if (double.TryParse(timeStr, out var time))
+		{
+			var allActions = GetCommandableActions();
+			for (var i = 0; i < allActions.Length; i++)
+			{
+				var iAct = allActions[i];
+				if (actName.Equals(iAct.Name, StringComparison.OrdinalIgnoreCase))
+				{
+					DataCenter.AddCommandAction(iAct, time, target);
+
+					if (Service.Config.ShowToastsAboutDoAction)
+					{
+						Svc.Toasts.ShowQuest($"Inserted action {iAct.Name} with time {time}{DescribeCommandTarget(target)}",
+							new Dalamud.Game.Gui.Toast.QuestToastOptions()
+							{
+								IconId = iAct.IconID,
+							});
+					}
+
+					return;
+				}
+			}
+		}
+
+		Svc.Chat.PrintError(UiString.CommandsInsertActionFailure.GetDescription());
+	}
+
+	private static unsafe CommandTarget? ResolveCommandTarget(string tag)
+	{
+		foreach (var targetingType in Enum.GetValues<TargetingType>())
+		{
+			if (tag.Equals(targetingType.ToString(), StringComparison.OrdinalIgnoreCase))
+			{
+				return CommandTarget.FromTargetingType(targetingType);
+			}
+		}
+
+		var pronounModule = PronounModule.Instance();
+		var obj = pronounModule == null ? null : pronounModule->ResolvePlaceholder($"<{tag.ToLowerInvariant()}>", 0, 0);
+		if (obj == null)
+		{
+			PluginLog.Debug($"[DoAction] <{tag}> did not resolve to an object, RSR will pick the target.");
+			return null;
+		}
+
+		return CommandTarget.FromObject(obj->GetGameObjectId());
+	}
+
+	private static string DescribeCommandTarget(CommandTarget? target)
+	{
+		if (target is not { } commandTarget)
+		{
+			return string.Empty;
+		}
+
+		if (commandTarget.TargetingType is { } targetingType)
+		{
+			return $" targeting {targetingType}";
+		}
+
+		return $" on {Svc.Objects.SearchById(commandTarget.ObjectId)?.Name.TextValue ?? commandTarget.ObjectId.ToString("X")}";
+	}
+
+	private static void DoRotationCommand(ICustomRotation customCombo, string str)
+	{
+		var configs = customCombo.Configs;
+		foreach (var config in configs)
+		{
+			var result = config.DoCommand(configs, str);
+			if (result)
+			{
+				if (Service.Config.ShowToggledSettingInChat)
+				{
+					Svc.Chat.Print($"Changed setting {config.DisplayName} to {config.Value}");
+				}
+				return;
+			}
+		}
+	}
+
+	private static void DoDutyRotationCommand(DutyRotation dutyRotation, string str)
+	{
+		var configs = dutyRotation.Configs;
+		foreach (var config in configs)
+		{
+			if (config.DoCommand(configs, str))
+			{
+				if (Service.Config.ShowToggledSettingInChat)
+				{
+					Svc.Chat.Print($"Changed setting {config.DisplayName} to {config.Value}");
+				}
+				return;
+			}
+		}
+	}
+}

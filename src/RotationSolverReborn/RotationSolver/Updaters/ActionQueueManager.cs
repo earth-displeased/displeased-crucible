@@ -1,0 +1,281 @@
+﻿using Dalamud.Hooking;
+using ECommons.DalamudServices;
+using ECommons.GameHelpers;
+using ECommons.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Commands;
+
+namespace RotationSolver.Updaters
+{
+	public static class ActionQueueManager
+	{
+		private static Hook<UseActionDelegate>? _useActionHook;
+
+		private unsafe delegate bool UseActionDelegate(ActionManager* actionManager, uint actionType, uint actionID, ulong targetObjectID, uint param, uint useType, int pvp, bool* isGroundTarget);
+
+		private const ulong InvalidGameObjectId = 0xE0000000;
+
+		public static void Enable()
+		{
+			InitializeActionHooks();
+		}
+
+		public static void Disable()
+		{
+			DisposeActionHooks();
+		}
+
+		public static ActionID[] BlackListedInterceptActions { get; } =
+		[
+			ActionID.TenPvE,
+			ActionID.TenPvE_18805,
+			ActionID.ChiPvE,
+			ActionID.ChiPvE_18806,
+			ActionID.JinPvE,
+			ActionID.JinPvE_18807,
+
+			ActionID.StandardStepPvE,
+			ActionID.TechnicalStepPvE,
+			ActionID.EmboitePvE,
+			ActionID.EntrechatPvE,
+			ActionID.JetePvE,
+			ActionID.PirouettePvE,
+			ActionID.StandardFinishPvE,
+			ActionID.TechnicalFinishPvE,
+
+			ActionID.EukrasiaPvE,
+			ActionID.EukrasianDosisPvE,
+			ActionID.EukrasianDosisIiPvE,
+			ActionID.EukrasianDosisIiiPvE,
+			ActionID.EukrasianDyskrasiaPvE,
+			ActionID.EukrasianPrognosisPvE,
+			ActionID.EukrasianPrognosisIiPvE,
+		];
+
+		private static bool BlackListedInterceptActionsContains(ActionID id)
+		{
+			var arr = BlackListedInterceptActions;
+			for (var i = 0; i < arr.Length; i++)
+			{
+				if (arr[i] == id)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private static unsafe void InitializeActionHooks()
+		{
+			try
+			{
+				var useActionAddress = ActionManager.Addresses.UseAction.Value;
+				_useActionHook = Svc.Hook.HookFromAddress<UseActionDelegate>(useActionAddress, UseActionDetour);
+				_useActionHook?.Enable();
+
+				PluginLog.Debug("[ActionQueueManager] Action interception hooks initialized");
+			}
+			catch (Exception ex)
+			{
+				PluginLog.Error($"[ActionQueueManager] Failed to initialize action hooks: {ex}");
+			}
+		}
+
+		private static void DisposeActionHooks()
+		{
+			try
+			{
+				_useActionHook?.Disable();
+				_useActionHook?.Dispose();
+				_useActionHook = null;
+
+				PluginLog.Debug("[ActionQueueManager] Action interception hooks disposed");
+			}
+			catch (Exception ex)
+			{
+				PluginLog.Error($"[ActionQueueManager] Failed to dispose action hooks: {ex}");
+			}
+		}
+
+		private static unsafe bool UseActionDetour(ActionManager* actionManager, uint actionType, uint actionID, ulong targetObjectID, uint param, uint useType, int pvp, bool* isGroundTarget)
+		{
+			if (Player.Available && Service.Config.InterceptAction3 && DataCenter.State && DataCenter.InCombat && !DataCenter.IsPvP)
+			{
+				try
+				{
+					if (actionType == 1 && (useType != 2 || Service.Config.InterceptMacro) && !StatusHelper.PlayerHasStatus(false, StatusHelper.RotationLockoutStatus)) // ActionType.Action == 1
+					{
+						var adjustedActionId = Service.GetAdjustedActionId(actionID);
+
+						if (_useActionHook?.Original != null && RSCommands.CurrentAction != null)
+						{
+							if (adjustedActionId == RSCommands.CurrentAction.AdjustedID)
+							{
+								return _useActionHook.Original(actionManager, actionType, actionID, targetObjectID, param, useType, pvp, isGroundTarget);
+							}
+						}
+
+						if (adjustedActionId == 7419 && _useActionHook?.Original != null)
+						{
+							return _useActionHook.Original(actionManager, actionType, actionID, targetObjectID, param, useType, pvp, isGroundTarget);
+						}
+
+						if (ShouldInterceptAction(adjustedActionId))
+						{
+							var rotationActions = RotationUpdater.CurrentRotationActions;
+							var dutyActions = RotationUpdater.CurrentDutyRotationActions;
+
+
+							var matchingAction = ((ActionID)adjustedActionId).GetActionFromID(false, rotationActions, dutyActions);
+
+							if (matchingAction != null && !BlackListedInterceptActionsContains((ActionID)matchingAction.ID))
+							{
+								CommandTarget? macroTarget = useType == (uint)ActionManager.UseActionMode.Macro && targetObjectID != 0 && targetObjectID != InvalidGameObjectId
+									? CommandTarget.FromObject(targetObjectID)
+									: null;
+
+								if (_useActionHook?.Original != null && matchingAction.IsIntercepted && ((ActionUpdater.NextAction != null && matchingAction != ActionUpdater.NextAction) || ActionUpdater.NextAction == null))
+								{
+									if (!matchingAction.EnoughLevel)
+									{
+										if (Service.Config.InterceptPassing)
+										{
+											return _useActionHook.Original(actionManager, actionType, actionID, targetObjectID, param, useType, pvp, isGroundTarget);
+										}
+									}
+									else if (!CanInterceptAction(matchingAction))
+									{
+										if (Service.Config.InterceptPassing)
+										{
+											return _useActionHook.Original(actionManager, actionType, actionID, targetObjectID, param, useType, pvp, isGroundTarget);
+										}
+									}
+									else if (matchingAction is IBaseAction baseMovAction && baseMovAction.Setting.SpecialType == SpecialActionType.ObjectBasedMovement && Service.Config.BmrSafetyCheckIntercept)
+									{
+										if (baseMovAction.TargetInfo.ShouldCheckMoveSafety() && baseMovAction.Setting.ObjectBasedMovementObjectOID != 0
+											&& (!ObjectHelper.TryGetOwnedObjectPosition(baseMovAction.Setting.ObjectBasedMovementObjectOID, out var position)
+												|| !DataCenter.IsMovementDestinationSafe(position)))
+										{
+											return false;
+										}
+
+										HandleInterceptedAction(matchingAction, actionID, macroTarget);
+										return false;
+									}
+									else
+									{
+										HandleInterceptedAction(matchingAction, actionID, macroTarget);
+										if (Service.Config.InterceptPassing)
+										{
+											return _useActionHook.Original(actionManager, actionType, actionID, targetObjectID, param, useType, pvp, isGroundTarget);
+										}
+										return false;
+									}
+								}
+								else
+								{
+									if (_useActionHook?.Original != null)
+									{
+										return _useActionHook.Original(actionManager, actionType, actionID, targetObjectID, param, useType, pvp, isGroundTarget);
+									}
+								}
+							}
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					PluginLog.Error($"[ActionQueueManager] Error in UseActionDetour: {ex}");
+				}
+			}
+
+			if (_useActionHook?.Original != null)
+			{
+				return _useActionHook.Original(actionManager, actionType, actionID, targetObjectID, param, useType, pvp, isGroundTarget);
+			}
+
+			return true;
+		}
+
+		private static bool ShouldInterceptAction(uint actionId)
+		{
+			if (ActionUpdater.NextAction != null && actionId == ActionUpdater.NextAction.AdjustedID)
+			{
+				return false;
+			}
+
+			var actionSheet = Svc.Data.GetExcelSheet<Lumina.Excel.Sheets.Action>();
+			if (actionSheet == null)
+			{
+				return false;
+			}
+
+			var action = actionSheet.GetRow(actionId);
+			var type = ActionHelper.GetActionCate(action);
+
+			if (type == ActionCate.None)
+			{
+				return false;
+			}
+
+			if (type == ActionCate.Autoattack)
+			{
+				return false;
+			}
+
+			if (!Service.Config.InterceptSpell3 && type == ActionCate.Spell)
+			{
+				return false;
+			}
+
+			if (!Service.Config.InterceptWeaponskill3 && type == ActionCate.Weaponskill)
+			{
+				return false;
+			}
+
+			if (!Service.Config.InterceptAbility3 && type == ActionCate.Ability)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		private static bool CanInterceptAction(IAction action)
+		{
+			if (Service.Config.InterceptCooldown || action.Cooldown.CurrentCharges > 0)
+			{
+				return true;
+			}
+
+			return action is IBaseAction baseAction
+				&& (baseAction.Cooldown.HasOneCharge || baseAction.Cooldown.RecastTimeRemainOneChargeRaw <= Service.Config.InterceptActionTime);
+		}
+
+		private static void HandleInterceptedAction(IAction matchingAction, uint actionID, CommandTarget? target)
+		{
+			try
+			{
+				try
+				{
+					// Move current to previous before updating current
+					DataCenter.CurrentInterceptedAction = matchingAction;
+				}
+				catch (Exception ex)
+				{
+					PluginLog.Warning($"[ActionQueueManager] Failed to set intercepted action tracking: {ex}");
+				}
+
+				RSCommands.DoSpecialCommandType(SpecialCommandType.Intercepting);
+				DataCenter.AddCommandAction(matchingAction, Service.Config.InterceptActionTime, target);
+
+				// Let the AddCommandAction system handle executing the queued action (do not attempt immediate execution here).
+				PluginLog.Debug($"[ActionQueueManager] Queued intercepted action: {matchingAction.Name} (OriginalID: {actionID}, AdjustedID: {matchingAction.AdjustedID}, Target: {target?.ObjectId.ToString("X") ?? "auto"})");
+			}
+			catch (Exception ex)
+			{
+				PluginLog.Error($"[ActionQueueManager] Error handling intercepted action {actionID}: {ex}");
+			}
+		}
+	}
+}

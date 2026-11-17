@@ -1,0 +1,6 @@
+Resurrection Test 3 / 7.5.7.508
+159 offline checks passed.
+The latest replay showed Healer Mimicry and Mighty Guard active, but Basic Instinct missing. The old readiness gate did nothing in this situation.
+The controller now requests Basic Instinct and Mighty Guard automatically during combat when missing, with pending-status checks to avoid repeated toggles. Urgent Spear/tank-Vice defense takes precedence.
+Healer Mimicry still must be obtained before entering. Entry and pull remain manual. The opening-only coverage boundary is unchanged.
+BMR AI is reset to Off by plugin reload: use /bmrai on once after reload. Keep RSR combat Off and the AI preset empty.

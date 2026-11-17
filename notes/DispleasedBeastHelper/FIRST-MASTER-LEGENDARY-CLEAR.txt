@@ -1,0 +1,24 @@
+FIRST MASTER'S BOARD, FIRST DEGREE - LEGENDARY CLEAR (goal reached)
+Date: 2026-11-13 16:28. Replay FirstMastersBoard_BST50_Ta_Be_2026_11_13_16_11_27.log. User screenshot
+E:\Dalamud_Plugins\development\Screenshot 2026-11-13 162825.png. Validated live.
+Builds: BeastHelper 0.2.36 / RSR 7.5.7.141 / BMR 7.5.7.536 (all deployed; backups in E:\Dalamud_Plugins\backups).
+
+RESULT 19,779 (Legendary needs 18,750)
+  Performance 8,279: Moves 100% 5,000; Elite x1 800; Enemy x3 750; Boss x1 1,000; Remaining HP 5,593 -> 729.
+  Bonus 11,500: Willing Sacrifice II 500; Unbeastable 1,250; Beastkin Gambit 750; Beast Squad III 4,250;
+                Starve the Fever 750; First Degree 4,000.
+
+WHAT DECIDED THE SCORE (learned 2026-11-12/13)
+- Unbeastable (1,250) is lost by any Damage Down / Vulnerability Up. In practice the only source was Borgny's Toxic
+  Mass explosion (Noxious Explosion 48821 -> Damage Down 4874).
+- Toxic Mass mechanic: idles ~3.3s, crawls 1y/s to the nearest Toxic Vomit puddle, explodes at 5.3y from it.
+  Fixes: Phlegm bait goes to the best puddle clearance reachable before the lock (BMR BorgnyAoePolicy); summon/release
+  burst waits until player AND familiar target the mass (RSR BorgnyToxicMassPolicy.MassTargeted); BeastHelper keeps
+  fangs for the mass (a fang hits it for ~7.5k of 13.4k) - do not spend fangs on Borgny by hand.
+- Remaining HP scores (821 -> 0, 5,593 -> 729, 6,501 -> 928). Willing Sacrifice I/II/III = 3/2/1 familiars
+  incapacitated at the clear (250/500/750); none = No Beast Left Behind 1,000. Sleepless Survival 1,000 = no camp rest.
+- Route length matters: each Enemy node is 250.
+- Borgny's auto-attacks were ~7x stronger (avg 880 vs 99-157) in the one run without random buff status 5205.
+
+HISTORY: FIRST-MASTER-BORGNY-REVIEW, -BORGNY-2, -ALLFIGHTS, -FIRST-CLEAR, -APEX-17550 (all in this folder).
+First Master behaviour stays gated to the First Master profile + territory 1342; nothing here affects other boards.

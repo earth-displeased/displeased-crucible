@@ -1,0 +1,31 @@
+SUCCESSFUL THIRD BOARD REVIEW - November 9, 2026
+Replay: ThirdBoardOfTheUnbroken_BST50_Ta_Be_2026_11_09_00_29_13.log
+Clear confirmed: Guttler HP reached zero at 00:55:13.272. Separate normal-mode XP recording began 00:58:57; it was not analyzed or modified.
+
+CAVALIER 00:29:35-00:31:38
+Player finished 3774/5818 HP. Direct damage: Cavalier autos 2480, Bishop Blizzard 1143, Crushing Blade 655. One G3 potion healed 2075. No clone AOE or Steelripper hit recorded. Bishop attacks remain a source of attrition; encounter-specific charge reservation could reduce them further. Cu Sith took only 42 direct damage in this fight.
+
+YMIR/SAHAGIN 00:32:07-00:33:46
+Player finished 2613/5818. Direct damage 1161, compared with 1887 in the previously reviewed 22:31 run. Only one Tsunami hit was recorded this time. Buffalo still died: Sahagin autos 1008, Dreadwash 841, Ymir autos 633, Blanket Thunder 840. Better Buffalo survival/aggro decisions remain useful. Pet actor removals from Parting Blow were distinguished from actual combat deaths where the record allowed it.
+
+CATOBLEPAS 00:35:49-00:37:37
+Player direct damage only 835: three autos and one Bestial Roar. No eye explosion, gaze petrification or Sinister Gleam hit recorded. Finished 1778/6108. Pet cover absorbed additional damage. The following HP increase before Lakhamu was recorded outside combat; no assumption was made about whether it came from a camp, item or manual action.
+
+LAKHAMU 00:38:26-00:41:43
+Player survived, finishing 4947/6283. Direct damage: boss autos 1547, Golem autos 472, Landslip 739, Sand Tempest 456, Earthshaker 1156 over five damage effects. No Burst, Rockslide or Earthrender player hit recorded. Earthshaker remains the main mechanic to examine, including direct-target hits versus pet-cover redirection. Beast Potion Kit activated near 00:40:27 and another large HP recovery occurred near 00:41:28. These HP gains matter and would be missed by counting only ordinary Heal action effects. Further add-focused Shield Charge reservation is a candidate, not yet installed.
+
+SIREN 00:43:38-00:46:28
+Successful, no player death. Charge reservation behaved as intended: no opening boss-only Shield Charge; four charges fired during add waves. First Crawling spawned 00:44:29.172; two charges at 00:44:29.664 and 00:44:30.839 each hit Crawling plus a zombie. Crawling died 00:44:37.639, around 8.5 seconds after spawn. Bind still applied at 00:44:33, so the issue improved but was not eliminated. Second Crawling spawned 00:45:49.617 and died 00:46:00.169, around 10.6 seconds later, with no recorded second Bind. The last charge hit six targets including Crawling, Siren and four zombies. No Sweet Song Burst, Dirge, Feral Lunge or Wallop player hit recorded; one Unmooring Melody hit did land. Zombie autos still dealt 1891. Player ended 3103/6690.
+Conditional healing was confirmed useful: at 00:43:45 the plugin requested G2 Antipetrification Soul Serum on critically low Coeurl while Crimson Ribbon was owned, and subsequent healing effects/HP gains are present. Beast Potion Kit was also requested near 00:46:11 and player HP rose from 1655 to 4331.
+
+GUTTLER 00:50:11-00:55:13
+Clear, player finished 3877/7679. One player death and automatic revival occurred. At 00:53:29 player had 810 HP; Thunderbolt dealt 954 at 00:53:33.752 and player reached zero at 00:53:34.560. Player returned at full HP at 00:53:37.535 and finished the fight. Reraise status had been applied at 00:50:25. Temporal Sand was unusable during combat and was not automatically spent. G2 potion had healed 1769 earlier; Reflection Tome fallback was requested at 00:52:51. After that diagnostics showed only unusable Temporal Sand, no healing consumable.
+Direct player damage: autos 5724, Beastly Aura 2024, Thunderbolt 2716, Beastly Flare proximity damage 1425. Beastly Aura is a planned knockback; its damage is not evidence of failed avoidance. No player hit from Gyrocleave, Gluttonous Goring/Gutting, cage Life Claim or blade-circle explosion recorded. Proximity spacing and heavy-hit coverage are stronger next improvement candidates than rewriting the working cage movement.
+
+REVIVED BUFFALO
+User reported reviving Buffalo before Guttler. No Buffalo summon actor appeared during Guttler. Live code reads ActionManager.BeastmasterPets each time; no permanent dead-beast cache was found. However, HornReady checks cooldown availability, not a complete comparison of roster HP or native summon usability. Opening and swap priority favor Coeurl/Cu Sith ahead of Buffalo outside Ymir.
+Final-fight decisions repeatedly selected Cu Sith and Coeurl. At 00:55:10.417 the log finally says Swapping to species 26 (Buffalo); the boss died about three seconds later, before Buffalo was summoned. Therefore the automation recognized Buffalo as a candidate by the end, but it did not use the revived beast for earlier tanking. The replay alone cannot establish Buffalo's exact native summon readiness at every earlier instant.
+Recommended improvement: validate actual summon usability and current roster HP, prefer a healthy revived Buffalo over a badly wounded Cu Sith/Coeurl for defensive swaps, and retry another ready species when the first choice cannot actually be summoned. This requires careful implementation and verification; no patch was installed during the user's normal XP run.
+
+STATE
+Preserved the successful installed builds: BeastHelper 0.2.27.0, RSR 7.5.7.133, BMR 7.5.7.530. No source, configuration or loaded plugin changes were made for this review. Next candidates: HP-aware revived-beast selection, proactive final-boss survival checks, and add-wave charge reservation for Cavalier/Lakhamu. This successful clear is a useful regression baseline.

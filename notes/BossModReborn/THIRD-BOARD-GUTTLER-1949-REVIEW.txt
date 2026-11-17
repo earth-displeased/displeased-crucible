@@ -1,0 +1,21 @@
+THIRD BOARD FIRST DEGREE - FINAL BOSS PROGRESS
+Recording: ThirdBoardOfTheUnbroken_BST50_Ta_Be_2026_11_08_19_49_53.log
+Cavalier, Ymir, Catoblepas, Lakhamu and Siren defeated. Siren required a revival (player death20:07:15, boss dead20:08:49). Final boss Guttler reached20:13:59. First pull ended at27962/132556 boss HP(21.1%); second pull ended21557/132556(16.3%). No full clear.
+
+Largest final-fight issues:
+- Beastly Flare proximity: four sword explosions hit for656,754,775,769. At every explosion, recorded player distance was30.5-31.0 yalms. Existing movement stopped just outside a fixed30-yalm avoidance radius, even though this is proximity damage.
+- Thunderbolt hit repeatedly for764-1035, with lethal1017 at20:24:28. Player had1012 HP immediately beforehand. Targeted tankbuster; cannot be treated as an ordinary sidestep.
+- One Life Claim cage-cross hit668 on the first pull.
+- No companion summon is recorded during either final-boss pull. Pet cover and pet damage cannot help if all available companions are depleted/unavailable. Exact native reason cannot be proven solely from this replay.
+- Healing item requests occurred, but later recovery reported no usable item. More resource visibility remains desirable.
+
+Installed: BMR7.5.7.528(Crucible Assist16), RSR7.5.7.129. BeastHelper0.2.22 unchanged.
+Changes:
+- Keep seeking greater legal distance from active Molten Blades throughout the arena instead of flattening movement at30 yalms. Preserve other hazard constraints. Bait points moved deeper into end cubbies.
+- Suppress Shield Charge during the proximity cast so rotation does not gap-close back toward danger.
+- Guttler Thunderbolt now requests cast-timed Snarl cover when a living familiar is available. Existing holds/health swaps retained.
+
+Validation: builds pass;1164 RSR/roster checks;315 BMR geometry/policy checks. Movement simulation of the actual four sword explosions moved to43.7,43.9,43.9,31.5 yalms versus recorded30.5,30.7,30.5,31.0. Fourth remains constrained by other hazards. Greater distance is not proof of zero damage or a full live clear; damage falloff is not simulated.
+
+Keep same trio and manual shopping/reward/entry controls. Before final boss, prioritize having healthy/available beasts and healing supplies. This update cannot create missing resources. Remaining work: overlap-constrained fourth retreat, cage handling, and explicit familiar/resource readiness display.
+Guide cross-check: https://www.icy-veins.com/ffxiv/beastmaster-crucible-of-the-unbroken (Guttler: bait Molten Metal at one end, then move to the other; Thunderbolt is a line tankbuster).

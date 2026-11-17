@@ -1,0 +1,56 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 6 REVIEW (2026-11-13 22:39)
+================================================================
+Replay: SecondMastersBoard_BST50_Ta_Be_2026_11_13_22_39_56.log (finished writing 23:02:54)
+Versions live: BeastHelper 0.2.39, RSR 7.5.7.143, BMR 7.5.7.539.
+Result: player died at Lauda 23:02:26 (Lauda 20.2%), during Searing Axe, with no consumables left.
+
+FIGHTS (fights2.py)
+  Flauros   22:40:48 100s  idle  6s  took 1,741 - Erratic Blaster covered (4 of 4 runs)
+  Drake     22:44:10 123s  idle 40s  took 3,579 - Vulnerability Up 22:45:18 (Twisting Blaze Blowing Ring of Fire 1,197),
+                                                  Wit's End x3 (Morpho)
+  Durga     22:46:39 126s  idle 20s  took 6,246 - Atomic Ray 3,506, healed 5,582
+  Sphinx    22:50:49  62s / 22:52:21 11s
+  Gigantis  22:53:35 139s  idle  4s  took 4,339 - Damage Down x8 (22:54:48) and x4 (22:55:22)
+  Lauda     22:59:09 198s  idle 34s  took 12,107 - died
+
+LAUDA DEATH
+  Lauda's timeline is fixed (identical offsets in the 17:24 replay):
+    75s Unseen Force, 131s Unseen Force, 150s Gluttonous Gutting, 168s Greater Strength, 174s Searing Axe.
+  Searing Axe is a 28s channel of raidwide pulses (111-201 each, every ~0.6s, no falloff between 8y and 14y). The 17:24
+  run survived it (died later at 275s). Here the player entered it at 1,791 HP with no items (inventory empty from
+  23:01:30) and died 6s into the pulses.
+  Where the HP went (avoidable or not):
+    * Gluttonous Gutting 1,722 + Vulnerability Up (loses Unbeastable): AVOIDABLE. Gutting (49446, rect 50x40 from
+      (520,-400) facing south) was cast 23:01:41.6 while the player held the north pocket for Unseen Force (status
+      23:01:34). Shockwave 23:01:51.4 threw the player 45y south into the rect; it hit at 23:01:55.2. Starting from the
+      south pocket would have landed at z -397.5, behind the rect origin.
+    * Beastly Flare 2,401 (Molten Blade at (516.7,-422.1), range 30): no spot on the platform is 30y away - looks
+      unavoidable by position.
+    * Thunderbolt 2 x ~950, Unseen Force dagger 891, Searing Axe pulses: unavoidable.
+  Unseen Force throws: 2 of 2 stayed on the platform (5 of 5 across attempts 3-6).
+
+GIGANTIS
+  * RSR 7.5.7.143 spare-slime targeting worked as designed but was late: the pair spawned 22:54:26.9 while the player
+    was held on the Lightning slime to bait Smashing Stamp, 18.5y from the spare Kindling (out of melee range). The
+    player reached it at 22:54:36; the Kindling went from 16,181 to 1,816 HP and Rupture still landed (22:54:47.8).
+    Previous runs did not damage the spare at all.
+  * NEW: small slimes (0x4D06/0x4D08, 646 HP) self-destruct ~36s after spawning (49374/49376, 7s cast) and each hit
+    adds a Damage Down stack. Wave-1 smalls (spawn 22:54:05) were never attacked -> x8 at 22:54:48; wave-2 smalls
+    (22:54:39) -> x4 at 22:55:22. In the 18:04 run one 44893 AoE killed all eight at 18:23:45 (by chance).
+
+CHANGES (built and tested, NOT validated live)
+  * SecondMasterTargetPolicy: small slimes priority 2 (above Gigantis), 4 while casting the self-destruct; spare big
+    slime 3 and Rupture 5 still outrank them. RSR now applies the policy to all slimes. RSR 7.5.7.144.
+  * LaudaUnseenForcePolicy.PocketZ(playerZ, northLandingUnsafe, southLandingUnsafe) + LandingZ; Lauda UnseenForce
+    AI hints check the Gluttonous Gutting AOEs that resolve after the throw and start in the pocket whose landing is
+    safe. The pocket swap is 45y (~7.5s at the observed ~6y/s) with ~9.8s available. BMR 7.5.7.540.
+  * Tests: PASS 1379 (7 new). BMR build: 0 errors, 6 usual warnings.
+
+STILL OPEN
+  * Lauda HP budget / heals: two grade-3 potions at 23:00:37 and 23:00:41, nothing after. Shops are manual: buy
+    extra potions; Searing Axe needs roughly 4-5k HP in hand at 174s.
+  * Spare big slime: ~1.8k short. Possible next levers: offensive item (fang) on the spare slime, or familiar commands.
+  * Drake: 40s idle (20.4s longest gap) and Vulnerability Up from Blowing Ring of Fire; Durga 20s idle.
+
+DEPLOYED 2026-11-13 23:11:00 (hashes verified): RSR 7.5.7.144 (backup backups\RSR-before-slimes-guttingpocket-20261113-231100,
+7.5.7.143), BMR 7.5.7.540 (backup backups\BossModReborn-before-guttingpocket-20261113-231100, 7.5.7.539).

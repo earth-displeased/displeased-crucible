@@ -1,0 +1,20 @@
+﻿{
+  "Author": "Rin (original BeastHelper); Displeased edition",
+  "Name": "Displeased BeastHelper",
+  "InternalName": "DispleasedBeastHelper",
+  "AssemblyVersion": "0.3.0.0",
+  "Punchline": "BeastHelper fork with Crucible board score / clear modes. Installs alongside the official BeastHelper.",
+  "Description": "Fork of Rin's BeastHelper (AGPL-3.0) with combat diagnostics, roster/whistle automation, First / Second Board score modes, First and Second Master's Board legendary profiles and Third Board three-beast clear mode with optional combat recovery and attack items. Entries, rewards and shops remain manual. Can be installed next to the official BeastHelper, but enable only one of them at a time. Commands: /dbh, /displeasedbeasthelper. Settings are stored separately (DispleasedBeastHelper.json).",
+  "ApplicableVersion": "any",
+  "RepoUrl": "https://github.com/Rin-0617/BeastHelper",
+  "IconUrl": "https://raw.githubusercontent.com/Rin-0617/BeastHelper/main/images/icon.png",
+  "Tags": [
+    "beastmaster",
+    "navigation",
+    "vnavmesh"
+  ],
+  "DalamudApiLevel": 15,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "CanUnloadAsync": false
+}

@@ -1,0 +1,101 @@
+[
+    {
+        "Author":  "Rin (original BeastHelper); Displeased edition",
+        "Name":  "Displeased BeastHelper",
+        "InternalName":  "DispleasedBeastHelper",
+        "AssemblyVersion":  "0.3.0.0",
+        "Description":  "Fork of Rin\u0027s BeastHelper (AGPL-3.0) with combat diagnostics, roster/whistle automation, First / Second Board score modes, First and Second Master\u0027s Board legendary profiles and Third Board three-beast clear mode with optional combat recovery and attack items. Entries, rewards and shops remain manual. Can be installed next to the official BeastHelper, but enable only one of them at a time. Commands: /dbh, /displeasedbeasthelper. Settings are stored separately (DispleasedBeastHelper.json).",
+        "ApplicableVersion":  "any",
+        "Tags":  [
+                     "beastmaster",
+                     "navigation",
+                     "vnavmesh"
+                 ],
+        "DalamudApiLevel":  15,
+        "LoadRequiredState":  0,
+        "LoadSync":  false,
+        "CanUnloadAsync":  false,
+        "LoadPriority":  0,
+        "Punchline":  "BeastHelper fork with Crucible board score / clear modes. Installs alongside the official BeastHelper.",
+        "AcceptsFeedback":  true,
+        "RepoUrl":  "https://github.com/earth-displeased/displeased-crucible",
+        "IconUrl":  "https://raw.githubusercontent.com/earth-displeased/displeased-crucible/main/src/BeastHelper/images/icon.png",
+        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/DispleasedBeastHelper.zip",
+        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/DispleasedBeastHelper.zip",
+        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/DispleasedBeastHelper.zip",
+        "IsHide":  false,
+        "IsTestingExclusive":  false,
+        "LastUpdate":  1794890824
+    },
+    {
+        "Author":  "The Combat Reborn Team",
+        "Name":  "Rotation Solver Reborn - Board Score Assist 4",
+        "InternalName":  "RotationSolver",
+        "AssemblyVersion":  "7.5.7.147",
+        "Description":  "Analyses combat information every frame and finds the best action.\n\nThis means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.\nThen, it will highlight the best action on the hot bar, or help you to click on it.\nIt is designed for `general combat`, not for savage or ultimate. Use it carefully.",
+        "ApplicableVersion":  "any",
+        "Tags":  [
+                     "combat",
+                     "rotation",
+                     "auto",
+                     "solver",
+                     "pve",
+                     "pvp"
+                 ],
+        "CategoryTags":  [
+                             "jobs"
+                         ],
+        "DalamudApiLevel":  15,
+        "LoadRequiredState":  0,
+        "LoadSync":  false,
+        "CanUnloadAsync":  false,
+        "LoadPriority":  0,
+        "IconUrl":  "https://raw.githubusercontent.com/FFXIV-CombatReborn/RebornAssets/main/IconAssets/RSR_Icon.png",
+        "Punchline":  "Analyses combat information every frame and finds the best action.",
+        "AcceptsFeedback":  true,
+        "RepoUrl":  "https://github.com/earth-displeased/displeased-crucible",
+        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/RotationSolver.zip",
+        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/RotationSolver.zip",
+        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/RotationSolver.zip",
+        "IsHide":  false,
+        "IsTestingExclusive":  false,
+        "LastUpdate":  1794890824
+    },
+    {
+        "Author":  "The Combat Reborn Team",
+        "Name":  "BossMod Reborn - Crucible Assist 18",
+        "InternalName":  "BossModReborn",
+        "AssemblyVersion":  "7.5.7.542",
+        "Description":  "Local experimental solo BLU: Goldor clear and Resurrection through orb overlap and Guardian adds. Later transition requires live validation.",
+        "ApplicableVersion":  "any",
+        "Tags":  [
+                     "combat",
+                     "boss",
+                     "dodge",
+                     "mechanics",
+                     "pve",
+                     "raids",
+                     "trials"
+                 ],
+        "DalamudApiLevel":  15,
+        "LoadRequiredState":  0,
+        "LoadSync":  false,
+        "CanUnloadAsync":  false,
+        "LoadPriority":  0,
+        "ImageUrls":  [
+                          "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image1.png",
+                          "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image2.png",
+                          "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image3.png"
+                      ],
+        "IconUrl":  "https://raw.githubusercontent.com/FFXIV-CombatReborn/RebornAssets/main/IconAssets/BMR_Icon.png",
+        "Punchline":  "Don\u0027t fail at raid mechanics anymore",
+        "AcceptsFeedback":  true,
+        "RepoUrl":  "https://github.com/earth-displeased/displeased-crucible",
+        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/BossModReborn.zip",
+        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/BossModReborn.zip",
+        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/BossModReborn.zip",
+        "IsHide":  false,
+        "IsTestingExclusive":  false,
+        "LastUpdate":  1794890828
+    }
+]

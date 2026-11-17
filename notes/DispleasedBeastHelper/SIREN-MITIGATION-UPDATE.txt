@@ -1,0 +1,12 @@
+Installed BeastHelper 0.2.26.0, RSR 7.5.7.131, BMR Crucible Assist17 7.5.7.529.
+
+Emergency mitigation is enabled by default and can be changed under Automatic duty-item actions:
+Use defensive items when healing is unavailable.
+
+At your enabled recovery threshold (currently 60% for the player), healing is attempted first, including eligible cure items and Crimson Ribbon serums. If no healing item can be used, try held Crucible Tannin, Tome of the Impervious (Blink), Tome of Reflection, Potion of Tempered Evasion, Potion of Tempered Constitution, then Potion of Breathtaking Swiftness. Active effects are skipped. Shared item cooldown, target/range and native usability checks apply. Familiar recovery uses the same fallback at its threshold, except self-only Swiftness. Player recovery keeps priority. No-item score modes and emergency stop still block use.
+
+Does not automatically spend elemental absorption items without a verified incoming element, ailment-inflicting Feral potions, or encounter-reset sand. Healing and defensive items must already be held; purchases/rewards remain manual.
+
+Siren analysis: the latest attempt reached about 15% boss HP. Crawling add Bind lasted about 8 seconds. Late Wallop (562) followed by Sweet Song Burst (927) killed the player. No usable healing item was reported during the late overlap. Updated RSR spends its last Shield Charge on the urgent Crawling add. BMR tracks each Burst source individually and gives imminent Bursts precedence over later Dirge positioning. Recovery inventory/readiness diagnostics are logged every 10 seconds when healing is unavailable.
+
+Validation: BeastHelper builds without warnings/errors; 1209 policy checks passed. RSR build passed; BMR build and 315 checks passed. Movement simulation cleared the lethal final Burst overlap, but does not model Bind restrictions or prove a live clear. Next attempt requires live verification.

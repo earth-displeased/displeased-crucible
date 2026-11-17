@@ -1,0 +1,23 @@
+FIRST MASTER'S BOARD XP RUN
+BeastHelper 0.2.31.0. Uses paired RSR 7.5.7.135 and BMR 7.5.7.531.
+
+Select BeastHelper -> Crucible -> Roster mode -> First Master's Board XP Run outside the duty.
+The existing First Master Legendary (initial test) and Third Board XP Run remain separate options.
+
+Before entry: builds a 12-beast roster. Cu Sith, Behemoth and Coeurl are retained first, followed by the nine lowest-ranked other captured beasts. Ties use bestiary species number. No duplicates or substitutions for missing core beasts. If there are fewer than nine other captured beasts, all available extras are used. Unknown candidate ranks pause preparation; open the bestiary so rank scanning can complete.
+Open team composition before entry and wait for roster setup to finish. Verify 12/12 when enough beasts are captured. Choose Normal difficulty manually.
+
+Before each fight: assigns only Cu Sith, Behemoth and Coeurl to battlehorns. Additional beasts remain XP passengers and do not replace the combat trio. The full roster stays fixed once entered even if XP changes rank ordering or the plugin reloads.
+
+Combat retains the First Master integration, including shared Treant add targeting and Behemoth's delayed Meteor/nearby-add cluster logic. Selecting this XP option preserves current recovery thresholds and item choices rather than resetting them. Entry, battle starts, routes, rewards and shops remain manual. This is a full-roster XP mode, so the three-beast score bonus is forfeited.
+
+Validation: build zero warnings/errors; 1,266 policy checks passed, 500 exhaustive class-selection scenarios and both XP roster suites passed. New coverage checks correct 12-slot capacity, core trio, globally lowest nine extras, duplicates/ties, missing core, unknown ranks, saved mode compatibility, preserved combat/item tuning and combat integration signal. Live full-roster XP entry remains to be verified in-game.
+
+Only the installed BeastHelper files were updated. RSR/BMR files and live configuration JSON were not edited. The new option is not selected automatically; choose it before your next entry.
+
+DEPLOYED 2026-11-14 18:17: BeastHelper 0.2.44 - XP run automates chests, shops (healing, then best gear: mitigation first, then damage - CrucibleGearPolicy), results and loot; checkbox 'Auto chests, shops, results and loot' (reselect the preset to enable). Passive 'Window opened'/'windowdump' log on territories 1342/1343 to find route-choice, campsite and battle-start windows. Route following and camps not built yet. Built and tested, not yet validated live. Backup: backups\BeastHelper-before-fm-xp-board-menus-20261114-181703
+DEPLOYED 0.2.45 2026-11-15 20:05: shop reads text coins/prices, 800 ms settle, English leave prompt recognized. Backup: E:\Dalamud_Plugins\backups\BeastHelper-before-shop-text-fix-20261115-200518
+DEPLOYED 0.2.46 2026-11-15 20:13: all shop automation disabled (0.2.45 still left the shop before buying). Shops are manual. Backup: E:\Dalamud_Plugins\backups\BeastHelper-before-shop-disable-20261115-201347
+DEPLOYED 0.2.47 2026-11-15 23:14: roster adds use the game's bestiary list order (sorted/filtered list caused slime/spriggan loop, team stuck 4/12). Backup: E:\Dalamud_Plugins\backups\BeastHelper-before-bestiary-slot-fix-20261115-231415
+DEPLOYED 0.2.48 2026-11-15 23:59: Crucible page reorganised into Board + Run menus (CrucibleRunSetup); old Prepare buttons/three-beast checkbox removed; experimental options under Custom. Backup: E:\Dalamud_Plugins\backups\BeastHelper-before-run-menu-20261115-235927
+VALIDATED LIVE 2026-11-16: 0.2.48 First Master's Board XP Run - user reports roster fill (0.2.47 bestiary-slot fix), Board/Run menu and run behaviour all working.

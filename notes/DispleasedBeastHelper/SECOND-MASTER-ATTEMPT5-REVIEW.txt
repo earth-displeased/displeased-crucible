@@ -1,0 +1,52 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 5 REVIEW (2026-11-13 18:04)
+================================================================
+Replay: SecondMastersBoard_BST50_Ta_Be_2026_11_13_18_04_43.log (finished writing 18:33:49)
+Versions live: BeastHelper 0.2.39, RSR 7.5.7.142, BMR 7.5.7.539.
+The user was away; the run stopped after Gigantis (18:24:29) and the duty timed out at 18:33:48. Lauda not reached.
+
+FIGHTS (fights2.py)
+  Flauros   18:05:24  99s  idle  5s  took 1,834  - Erratic Blaster covered by Snarl again (3 of 3 runs)
+  Drake     18:09:38 177s  idle  8s  took 3,167  (attempt 4: 57s idle, player died)
+  Durga     18:15:09 114s  idle 13s  took 4,797  - Atomic Ray 2,613 at 3,642/8,346 HP, survived
+  Sphinx    18:19:24  52s  idle  0s
+  Sphinx    18:20:49  28s  idle  0s
+  Gigantis  18:22:43 105s  idle  9s  took 2,856  - Damage Down 18:23:57 (Rupture Fire)
+
+WHAT THE 7.5.7.539 / 0.2.39 CHANGES DID (validated live)
+  * BMR 539 melee goal without ForcedTarget: target thrash gone. Player target switches
+      Flauros 3 (attempt 4: 62), Lightning Sprite 3 (67), Barbmole 6 (58), Morpho 5 (31).
+    Idle time down at Drake (8s vs 57s) and no fight above 13s idle.
+  * Durga Atomic Ray floor (0.2.39): BeastHelper asked for a heal during the cast ("Recovery needed") but the only
+    item held was Crucible Eye Drops - no heal in inventory. The hit was 2,613, so the player lived. Logic ok,
+    inventory empty. Not validated: the actual heal-before-ray path.
+  * Lauda familiar-potion block and Antidote fallback: not exercised (Lauda not reached, no Antidote held).
+
+ONLY SCORE LOSS: DAMAGE DOWN AT GIGANTIS (Unbeastable -1,250)
+  Same sequence in attempt 3 (17:24 replay) and this run:
+    18:23:34  pair spawns: Congealed Kindling + Congealed Lightning (16,181 HP each); Gigantis weapon = fire (0x49A)
+    18:23:45  Smashing Stamp (baited correctly by BMR) kills the Lightning; weapon flips to lightning
+    18:23:49  the untouched Kindling casts Rupture Fire (49375, 7s, range 40)
+    18:23:56  Rupture hits the player -> Damage Down 4874
+    Player target the whole time: Gigantis (one 2s blip onto the Lightning, which the stamp kills anyway).
+    17:24 run: identical with elements swapped (Rupture Lightning 17:40:13 -> Damage Down 17:40:20).
+  Cause: RSR picks its own targets on this board (BMR no longer forces them, by design since 539) and has no idea the
+  spare slime must die. The spare had ~21s from spawn to Rupture landing; a lone slime lost 10k HP in 5s (18:23:03-08).
+
+CHANGE (built and tested, NOT validated live)
+  * New pure policy BMR 05SecondMasterBoard\SecondMasterTargetPolicy.cs (linked into RSR and the test project):
+      big slime casting Rupture -> priority 5; with two big slimes alive, the one the stamp will NOT hit -> 3
+      (fire weapon: Kindling; lightning weapon: Lightning); a lone big slime -> 3; everything else 0 (normal targeting).
+  * RSR FirstBoardScoreIntegration: SecondMasterSlimeEncounter / SecondMasterPriority / SecondMasterTarget, gated on the
+    Second Master preset IPC + territory 1343. ActionTargetInfo applies it exactly like the First Master Treant adds.
+  * RSR 7.5.7.143. Tests: PASS 1372 (6 new checks). BMR not rebuilt (the policy is unused inside BMR for now).
+
+OTHER NOTES
+  * Heal items ran out by Durga again (pre-pull grade-1 potion at 52.4%, then nothing until a reward refilled at 18:21).
+    Shops are manual: buy extra recovery potions when the route offers them.
+  * Familiar potion at Sphinx 18:19:42 (grade 3 to Coeurl at 31.5%) - allowed by the surplus rule; keep watching.
+
+NEXT RUN
+  * DEPLOYED RSR 7.5.7.143 2026-11-13 22:38:56 (backup backups\RSR-before-gigantisslime-20261113-223856, 7.5.7.142);
+    hashes verified. No preset change needed.
+  * Check at Gigantis: target switches to the spare slime when the pair spawns; no 4874.
+  * Still open: Lauda (long fight, Thanatos Vulnerability Up), Mind Flayer Spore Damage Down, Morpho stacks at Drake.

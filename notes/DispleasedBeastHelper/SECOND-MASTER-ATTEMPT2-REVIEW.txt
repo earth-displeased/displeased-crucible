@@ -1,0 +1,20 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 2 (First Degree) - FAILED at Mind Flayer (Move 2 Left elite)
+Replay SecondMastersBoard_2026_11_13_17_14_56.log (new file because BMR was hot-reloaded at 17:14:56; the 17:14:22 file
+holds the first seconds). BeastHelper 0.2.38 / RSR 7.5.7.142 / BMR 7.5.7.537. User followed the recommended route.
+Review 2026-11-13 (Claude).
+
+FLAUROS (17:15:29-17:17:11, 102s): Erratic Blaster covered - "[First Master defense] Preparing pet cover for Flauros
+Piece, cast 49188" + Snarl; it did not hit the player (attempt 1: 1,971). Validated live.
+
+MIND FLAYER (17:19:16-17:21:42, player died; Ring of Sacrifice revive, died again 17:22:10)
+- Idle 86s of 143s; from 17:19:55 to 17:20:51 the player stood still at (107.5,-5.2), 12.8y from Mind Flayer, no action
+  (no melee goal in any Second Master module). Mind Flayer took only 39,931 damage.
+- Heals: one potion (17:19:39); from 17:20:58 "healing unavailable" (only Reflection tome / Temporal sand / item 116).
+- Damage Down (4874) at 17:21:18 from a Spore (49198, Myconid Spore Spill) - would also have cost Unbeastable.
+- HP fell from 5,530 to 0 mostly to autos (2,211) + Void Water III 735 while the fight dragged on.
+
+CHANGE - BMR 7.5.7.538 (built and tested, PASS 1364; NOT deployed)
+- SecondMasterCombatHints.Apply, called from AIHintsBuilder after the active module's hints: zone 1343 + group 1092 +
+  BST + module did not set ForcedTarget -> FirstMasterCombatHints.ApproachPriorityTarget (force highest-priority target,
+  weak melee goal weight 2; forbidden zones win). Lauda keeps its own target/approach logic.
+OPEN: Spore Spill Damage Down (needs the Mind Flayer module's spore handling checked).

@@ -1,0 +1,17 @@
+Resurrection Test 5 / 7.5.7.510
+208 offline regression/production-geometry checks passed. Newly added mechanics still require live validation.
+Reviewed replay 2026-11-06 21:52:21 (two pulls), ending 21:58:40.
+Previous automation handled opening, Pure Light and Delta, then paused at Pure Beam. Later manual continuation died during the Guardian phase.
+Added:
+- Pure Beam helper 15774: snapshotted 60y beams, width 4 plus a conservative margin.
+- Paradise Lost helper 15776: ground-target radius 6 plus margin; uses actual cast location instead of helper position at arena center.
+- Pure Light rectangular hazard while overlapping the orb waves; safe-corner positioning no longer freezes movement when a beam or ground circle threatens it.
+- Dimensional Shift / Fragor Maximus health preparation and recovery.
+- Guardian arrival: south-side positioning for simultaneous proximity impacts.
+- Guardian targeting: permanent Mortal Flame on both, then focus lower HP; Breath of Magic and optional equipped Feather Rain.
+- Guardian Mana Burst healing preparation.
+- Instant Mana Slice pairs: reserve Diamondback 5 seconds before expected impact (first 11.2s after Dive, repeat 15.25s after confirmed Slice). Maintain 6500 MP reserve while adds are alive.
+Observed final death: HP 3093 before paired autos, then Mana Slice 17428 + 17111; these instant cleaves require anticipation rather than a cast-bar reaction.
+Attack dimensions verified read-only from the installed game action sheets using Lumina. Timings derived from replay, not a guarantee for every variation.
+Still incomplete: post-Guardian transition/Eternal Breath and repeat-cycle validation. Unknown primary casts still pause; keep recording and use manual takeover when requested.
+After reload use /bmrai on once; RSR combat Off; empty AI preset; Healer Mimicry active. Entry, rewards, dialogue and retries remain manual.

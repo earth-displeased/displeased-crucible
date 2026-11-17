@@ -1,0 +1,69 @@
+FIRST MASTER FIRST DEGREE - BORGNY REVIEW / TOXIC MASS UPDATE
+Replays: FirstMastersBoard_BST50_Ta_Be_2026_11_11_20_45_17.log and _2026_11_11_21_44_31.log
+Review date: 2026-11-12 (Claude). Built and policy-tested 2026-11-12 20:25 (PASS 1301, 0 errors; BMR 6 known
+warnings); installed 20:26 (backup: backups\before-borgny-0.2.34; live hashes verified = build output).
+NOT yet validated in a live run.
+Proposed versions: BeastHelper 0.2.34 / RSR 7.5.7.138 / BMR 7.5.7.533.
+
+PROGRESS SINCE 0.2.33
+Both runs cleared Strix, Gargoyle and Treant (20:45 also Corpse Flower) with no deaths and reached the final boss.
+Treant is no longer the wall: 1,040-1,068 damage/s, no Nightmare deaths, adds handled.
+Both runs failed at Borgny the Venomous (115,339 HP):
+  20:45 - pets entered with Cu Sith 142/3,171 HP and Behemoth/Coeurl never summoned. Player soloed; 233-305 dmg/s;
+          four deaths; boss left at 30-35% on both pulls.
+  21:44 - 491 dmg/s; player died at 184s with Borgny at 30.6% (35,337 HP). About 50 more seconds, or ~25% more
+          damage, would have cleared it.
+
+WHY BORGNY FAILED (21:44 run)
+1. Toxic Mass is never killed. 6 of 6 masses (both runs) exploded (Noxious Explosion: 650-1,200 to the player, a
+   Toxicosis stack and status 4874). Best attempt: 3,204/13,420 HP left. Every mass spawned ~9.7s after Borgny began
+   Wriggling Phlegm (48817, 7.9s cast). Nothing damaged the mass for its first ~5s, and the player left it at ~17s to
+   dodge Cauterize, so the real window is ~12s.
+   Wasted burst: Coeurl's release (47093 -> 44999, 1,605) hit Borgny at 00:18, 3s before that mass spawned. The Wind
+   fang (2,720) had been spent on Gargoyle. Together they cover the 3,204 shortfall.
+2. Pets entered Borgny nearly empty: Cu Sith 2,123/4,723, Behemoth 594/3,492, Coeurl 103/3,077. No pet could hold
+   aggro. After Behemoth died at 01:38 there was no pet out for the final 17s.
+   Familiar potion healing (0.2.33) never ran: saved config has AutoFamiliarRecoveryEnabled = False. The preset was not
+   reselected after the update.
+3. Healing ran out. Last heal 22:01:08; HP then fell from 2,988 to 0 over 32s with no item available (boss autos ~110,
+   Toxicosis ticks ~110/3s, one Toxic Breath series 1,349, Salivous Snap 733).
+4. Wasted item at Gargoyle: Beast potion kit at 21:53:06, then a G2 potion at 21:53:08 because the kit's heal lands
+   ~2.5-2.7s after use and the shared item cooldown is only 2s. Same pattern at 20:45 Borgny: kit 21:01:06, then G2
+   Reraiser burned as "emergency mitigation" at 21:01:08 before the kit's heal landed.
+5. Toxic Breath: 11 of 12 recorded breaths were dodged (player hugging the emitter, inside the 6y safe radius). The one
+   failure (01:24) started 27y from safety after a knockback; BMR gave the AOE activation DateTime.MaxValue, so the
+   pathfinder saw it as far-future.
+
+SETUP DIFFERENCE (worth repeating)
+Boss auto-attacks hit for ~110 in the 21:44 run versus ~580-750 in the 20:45 run. The 21:44 player had status 48
+(food) and a different set of Crucible statuses (5205/5207/5210/5211/5264 vs 5202/5203/5208/5226/5256), plus 7,340
+max HP vs 6,176. Whatever boons/food were picked in the 21:44 run made a large defensive difference; reuse them.
+
+CHANGES (source edited; build with E:\Dalamud_Plugins\development\Build-BorgnyUpdate.cmd)
+RSR 7.5.7.138 - Basic/Helpers/BorgnyToxicMassPolicy.cs (new), RebornRotations/Limited Jobs/BST_Reborn.cs
+  First Master profile, Borgny only. From the start of Wriggling Phlegm, hold Trick, Tempered Release/Borrow, Parting
+  Blow and new beast summons until the Toxic Mass is the current target, then release them onto it. Bounded: 17s
+  from the cast, or 12s waiting on a living untargeted mass. Released immediately below 30% player HP. Logs
+  "[First Master Borgny] ...".
+BeastHelper 0.2.34 - Services/CrucibleItemTimingPolicy.cs (new), Services/CrucibleRecoveryItemService.cs
+  a) Pending-heal lock: after a recovery or mitigation item, no further recovery item until HP rises or 4s pass
+     (bypassed below 25% HP). Covers pre-pull recovery too. Familiar healing also waits.
+  b) First Master profile only: fangs are kept for Toxic Mass. Before Borgny, only spend them when 2+ offensive item
+     slots are held (one stays reserved). During Borgny, only on Toxic Mass. Other boards unchanged.
+BMR 7.5.7.533 - 04FirstMasterBoard/BorgnyTheVenomous.cs
+  Toxic Breath AOE activation = cast finish instead of DateTime.MaxValue.
+Tests: 21 new checks in tests/FirstBoardScore (Toxic Mass timings from the 21:44 replay; heal lock; fang reserve).
+Pre-edit copies: E:\Dalamud_Plugins\backups\source-before-borgny-20261112.
+
+NOT CHANGED / OPEN
+- Pet cover thresholds (Snarl/Challenge) unchanged. With pets this depleted it would not have mattered; revisit
+  once familiar healing actually runs.
+- No route/camp/shop automation. Pets only recover what camps and items give them.
+
+NEXT RUN
+1. Run Build-BorgnyUpdate.cmd. If it fails, send build-borgny-0.2.34.log.
+2. Close the game (or unload the three plugins), run Install-BorgnyUpdate.cmd, start the game.
+3. Outside the duty, reselect "First Master Legendary (initial test)" in BeastHelper so familiar recovery turns on
+   at 45% (or tick it manually). Confirm before entering.
+4. Prefer the boons/food from the 21:44 run. Use camps for pets before Borgny when offered.
+5. Keep replay recording on. At Borgny, check for "[First Master Borgny]" lines and whether Toxic Mass dies.

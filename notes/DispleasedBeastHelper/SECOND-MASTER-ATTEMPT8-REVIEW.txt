@@ -1,0 +1,38 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 8 REVIEW (2026-11-13 23:42)
+================================================================
+Replay: SecondMastersBoard_BST50_Ta_Be_2026_11_13_23_42_47.log (finished writing 2026-11-14 00:05:34)
+Versions live: BeastHelper 0.2.39, RSR 7.5.7.145, BMR 7.5.7.541.
+Result: player died at Lauda 00:04:55, 251s into the fight, Lauda 39.0%. Survived Searing Axe this time (entered at 8,542).
+
+WHAT IMPROVED
+  * Gigantis: no Damage Down at all (first time) - small-slime / spare-slime priority (RSR 144/145) validated live.
+  * No Thanatos Vulnerability Up. Lauda target thrash gone (95 target changes, only 2 within 0.1s; 23:11 run thrashed).
+  * Lauda fight lasted 251s (previous best 275s in 17:24 at 32.8%).
+
+WHY IT FAILED
+  1. Lauda held on the player the whole fight: ~144s of ~146s sampled (familiars ~1s). The player took 5,916 autos,
+     3 Thunderbolts 2,352 (tankbuster bait on Lauda's target) and Gluttonous Goring 1,587 + Vulnerability Up (00:03:22,
+     Goring = the other Gutting variant, also on Lauda's target). RSR's Master-board swap rule (First Master tuning: take
+     damage back when the player is 20 points healthier) undid Snarl cover: 00:01:39.5 cover -> 00:01:40.8 "Taking
+     damage back: player 77%, Coeurl 54%"; 00:02:42 again.
+  2. Damage race: 486/s on Lauda (22:39 run 778/s). Player auto-attacks averaged 119 on Lauda vs 591 in 22:39 (and 217 vs
+     685 on Gigantis); GCDs ~10-15% lower. The Crucible buff statuses differed completely (22:39: 5207, 5234 x100, 5240,
+     5263 x500 ...; this run: 5200, 5204, 5225, 5230, 5241, 5247, 5249, 5252, 5268 ...). Random route buffs (manual);
+     names are blank in the game data (xivapi v2 empty), so they cannot be identified automatically.
+  3. Magicked Blades (spawn 00:03:31) were not killed: 13,061 damage spread over both (11,002 HP each); both became
+     untargetable at 00:04:05.
+  4. Heals ran out at 00:03:49 (two powders at 00:03:22 / 00:03:27 and one potion at 00:02:14).
+
+CHANGES (built and tested, NOT validated live) - RSR 7.5.7.146 (BMR unchanged, 541)
+  * SecondMasterDefensePolicy.LaudaCover / LaudaTakeBack, used while the Second Master preset is on and Lauda is alive:
+    familiar covers whenever it has >= 35% HP (player <= 90% or familiar >= player); take damage back only when the
+    familiar is <= 25% and the player > 50%. First Master rules unchanged (test checks both).
+  * Cover casts added: Lauda Gluttonous Goring (49448), Thunderbolt (49470).
+  * Tests PASS 1385 (6 new).
+
+NOTE FOR THE USER
+  Lauda is now a DPS check as much as a mechanics check. The 22:39 run's buff set roughly doubled auto-attack damage.
+  If the route offers damage buffs, prefer them before Lauda. If you can tell me which buffs you picked in the 22:39 run
+  versus this one, I can map the status IDs to names.
+
+DEPLOYED 2026-11-14 00:46:30 (hashes verified): RSR 7.5.7.146 (backup backups\RSR-before-laudafamiliartank-20261114-004629, 7.5.7.145).

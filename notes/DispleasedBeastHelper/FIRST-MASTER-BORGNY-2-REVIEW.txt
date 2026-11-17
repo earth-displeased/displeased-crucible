@@ -1,0 +1,71 @@
+FIRST MASTER FIRST DEGREE - RUN 2026-11-12 22:01 REVIEW (Treant finish, Borgny AOEs, Toxic Mass targeting)
+Replay: FirstMastersBoard_BST50_Ta_Be_2026_11_12_22_01_59.log (versions 0.2.34 / RSR 7.5.7.138 / BMR 7.5.7.533)
+Review date: 2026-11-12 (Claude). BeastHelper 0.2.35 + BMR 7.5.7.534 built and policy-tested (PASS 1318, 0 errors,
+BMR 6 known CS0618 warnings). Deployed 22:38:59 (game running, outside the duty; Dalamud hot-reloaded both, no errors),
+live hashes = build output. Backups: backups\beasthelper-before-treant-borgny-aoe-20261112-223859 (0.2.34) and
+backups\Resurrection-BMR-Test1-before-treant-borgny-aoe-20261112-223859 (7.5.7.533). RSR unchanged (7.5.7.138).
+NOT yet validated in a live run.
+
+RESULT
+Strix, Corpse Flower, Gargoyle and Treant cleared (Treant finished by hand). Died at Borgny 22:21:08 with Borgny at
+~39% (70,251 of 115,339 dealt). No healing item held for the whole Borgny fight; 14,852 damage taken.
+
+WHAT THE REPLAY SHOWS
+1. Treant end (user report: "ran away to kill an add"). 22:15:24.86 a Biloko Piece spawned with Treant at 1,996/96,115
+   (2.1%). BMR's Treant module switched the forced target to it within 60ms (Biloko priority 6 > Treant 1), Snarl went
+   on the Biloko and the player walked ~15y towards it. Behemoth died there. The user retargeted Treant; it died 22:15:32.
+   The Biloko despawned with Treant. Natural Nurture (9s cast) first lands ~10.9s after a Biloko spawns and heals 4,805
+   (21:44 run: two heals; 22:01: none landed).
+2. Borgny AOEs (user report: "ran right through them"). 22:19:58-22:20:03: four Poison Cloud hits (action 50543,
+   1,112-1,382 each, +1 Toxicosis 4874 stack each = 5,118) plus 2 Toxic Breath hits (907), while moving from
+   907,-407 to 935,-431 to dodge the breath cast at 22:19:54.8.
+   Cause: my 0.2.34 change set Toxic Breath's activation to the cast end. Over 13 breaths in 3 replays the first hit
+   lands 5.33-5.41s after the cast starts = 2.6-2.7s AFTER the cast end. The pathfinder rushed across the arena to beat
+   a deadline 2.7s too early and accepted the clouds. Compare 21:44 (old far-future activation): clouds 19, breath 1,349.
+   0.2.34 made this worse; the user's observation was correct.
+   Also: Poison Clouds spawn facing back towards their puddle and turn to their travel direction only after ~1.1s, so
+   BMR's cloud capsule pointed the wrong way for that time. Not the cause of these four hits (those clouds were 3s+ old).
+3. First Toxic Mass never targeted. Spawned 22:18:51.8 (targetable after 25ms). Player target went empty at 22:18:52,
+   no action was requested for 33s (22:18:42-22:19:25), mass exploded at full 13,420 HP. The second mass (and the 21:44
+   mass) was targeted by RSR ~5.3s after spawn and attacked. No log line explains why the first was skipped.
+   RSR hold worked as designed ("Holding ... Toxic Mass", "Toxic Mass targeted: summons and release allowed").
+4. Healing. Pre-pull Beast potion kit at 22:17:23 (HP 36.7%) was the last recovery item. BeastHelper's inventory
+   diagnostic then read "no consumable items held" for the entire fight (22:18:01-22:20:59). The user says they used a
+   G2 Antipoison serum by hand during Borgny; item uses are not recorded in the replay. Unexplained HP rises: 22:18:03
+   (+3,155), 22:19:21 (+1,938), 22:19:44-58 (+2,495).
+   RESOLVED (user): the G2 Antipoison serum was used by hand just after Borgny's pull; it is a 300s buff giving 100%
+   poison-damage resistance, not a heal. It was gone before the first diagnostic (22:18:01), so the inventory read is
+   consistent. Items are random drops; the user cannot choose them.
+   Food: status 48 (Well Fed) was present in the 22:01 run (extra 10699) and the 21:44 run (extra 10707), absent in the
+   20:45 run, which is the run where Borgny's autos hit 580-750 instead of ~110-170. Food names not resolved here.
+5. Familiar recovery still OFF in saved config (AutoFamiliarRecoveryEnabled=False, threshold 15). The preset sets it to
+   on / 45. The preset was not reselected after 0.2.34.
+6. Pets: Coeurl died at Corpse Flower, Behemoth during the Treant add chase; Borgny started with Cu Sith 1,693/3,639 only.
+7. The reserved Lightning fang left the inventory between 22:14:47 and 22:14:57 (Treant) without a BeastHelper log
+   line (manual use?). Borgny therefore had no fang for the Toxic Mass.
+8. Touchdown knockback hit both times (1,217 / 1,007). Not changed - mechanic not understood well enough yet.
+
+CHANGES - BeastHelper 0.2.35 (Services/CrucibleItemTimingPolicy.cs, CrucibleRecoveryItemService.cs)
+e) First Master profile, with recovery items enabled: use the G2 Antipoison Soul Serum (item 87) once per Borgny
+   encounter as soon as Borgny is up (heals still go first when HP is low). Logs "[First Master Borgny] Used ...".
+   Before Borgny, the Crimson Ribbon healing path may not spend item 87. G1 (86) not included - effect unconfirmed.
+   6 new test checks. CrucibleItemTimingPolicy.cs normalised to UTF-8 BOM + CRLF.
+
+CHANGES - BMR 7.5.7.534 (RSR unchanged)
+a) FirstMasterTargetPolicy.cs / TreantPiece.cs: Treant finish mode. At <=10% HP (9,611) Treant gets priority 9 and
+   becomes the forced target over all adds (~8-9s at the 1,040-1,234 dmg/s measured, inside the 10.9s first heal).
+   Above 10% the add order is unchanged.
+b) BorgnyAoePolicy.cs (new, pure) / BorgnyTheVenomous.cs: Toxic Breath activation = cast end + 2.6s (first real hit).
+c) Poison Cloud capsule follows the cloud's travel direction (spawn -> current position), reversed spawn facing
+   before it moves.
+d) Borgny module forces the Toxic Mass as target for BST while it is alive and targetable (same mechanism as Treant).
+   Untested whether the mass takes damage in its first ~5s; if not, those hits are wasted but nothing else changes.
+Tests: 11 new checks (Treant finish thresholds from 22:15:24 and 21:44 values, breath timing, cloud heading).
+
+NEXT RUN
+1. Deployed (see top). Confirm the BeastHelper window shows 0.2.35.
+2. Reselect "First Master Legendary (initial test)" in BeastHelper outside the duty so familiar recovery turns on at 45%.
+3. Eat food before entering (both food runs took far less auto-attack damage than the no-food run).
+   If a G2 Antipoison serum drops, leave it to BeastHelper at Borgny and check for its log line.
+4. Watch: Treant should stay on the boss below 10%; Borgny should target each Toxic Mass immediately; breath dodges
+   should no longer cross clouds. Check for "[First Master Borgny]" lines.

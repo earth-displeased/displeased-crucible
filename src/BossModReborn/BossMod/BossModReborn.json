@@ -1,0 +1,31 @@
+{
+  "Author": "The Combat Reborn Team",
+  "Name": "BossMod Reborn - Crucible Assist 18",
+  "InternalName": "BossModReborn",
+  "RepoUrl": "https://github.com/FFXIV-CombatReborn/BossmodReborn",
+  "Description": "Local experimental solo BLU: Goldor clear and Resurrection through orb overlap and Guardian adds. Later transition requires live validation.",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "combat",
+    "boss",
+    "dodge",
+    "mechanics",
+    "pve",
+    "raids",
+    "trials"
+  ],
+  "DalamudApiLevel": 15,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "CanUnloadAsync": false,
+  "LoadPriority": 0,
+  "IsTestingExclusive": false,
+  "IconUrl": "https://raw.githubusercontent.com/FFXIV-CombatReborn/RebornAssets/main/IconAssets/BMR_Icon.png",
+  "Punchline": "Don't fail at raid mechanics anymore",
+  "AcceptsFeedback": true,
+  "ImageUrls": [
+    "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image1.png",
+    "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image2.png",
+    "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image3.png"
+  ]
+}

@@ -1,0 +1,13 @@
+Resurrection Test 7 / 7.5.7.512
+250 offline regression and production-geometry checks passed. Live validation remains required.
+Reviewed replay 2026-11-06 22:59:08. Offense cooldowns were executing and one Guardian was killed. At its death, the second Guardian still had 240755 / 307773 HP and began Unto Dust (15784, 9.7s reported cast, not interruptible). Test 6 paused at that unrecognized cast. Cones and cooldowns had disproportionately damaged one add.
+Changes:
+- Apply Mortal Flame to both, then target the healthier Guardian to balance remaining health.
+- Hold a south-side position at (100,114) rather than moving between the Guardians. Aim cone attacks at their midpoint and center ground-targeted attacks between them.
+- Require both Guardians in range before self-centered/cone burst attacks.
+- Reserve long damage cooldowns after the first Dimensional Shift, and short ground cooldowns after the return Shift, for the upcoming Guardian pair. Reservations release when the adds arrive. Ordinary damage and DoTs continue on Eden.
+- Recognize Unto Dust. Release routine heal/MP/cleave reservations to finish the survivor during its cast instead of pausing. Existing Diamondback roots are still respected.
+- Show both Guardian HP percentages in global hints and show when burst is reserved.
+Preserved Goldor, defensive handling and entry/reward/dialogue/retry preferences. No loadout changes needed for the recorded equipped spells.
+After reload: /bmrai on once, RSR Off, empty AI preset, Healer Mimicry active. Keep replay recording enabled.
+Still requires live testing: paired Guardian kill and the subsequent transition/repeated fight cycle. Full-clear support is not claimed.

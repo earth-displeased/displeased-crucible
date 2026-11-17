@@ -1,0 +1,22 @@
+THIRD BOARD BEASTKIN ATTEMPT - CAVALIER REVIEW
+Recording: ThirdBoardOfTheUnbroken_BST50_Ta_Be_2026_11_07_22_50_23.log
+Combat start about 22:51:25, death 22:53:52. First fight not cleared; Cavalier last recorded HP 16621/59184 (~28.1%).
+
+Observed:
+- Cu Sith dismissed at 22:51:32 and Coeurl at 22:51:46. No familiar until 22:53:05. Healthy-pet swaps sacrificed sustained damage and cover.
+- Buffalo was never summoned in this Cavalier attempt.
+- Menace damage at 22:53:14 (~1244 combined) and Steelripper at 22:53:43 (~901).
+- A grade-3 recovery potion WAS used at 22:52:38, HP 59.8%; later requests reported no usable healing item (inventory/cooldown not distinguishable).
+- BMR preset loss occurred at death, not the initial reason for missed mechanics.
+
+Installed: RSR 7.5.7.127, BMR 7.5.7.526 (Crucible Assist 14). BeastHelper remains 0.2.22.0.
+- Keep healthy pets after Borrow/controlled attacks. Swap at critical pet HP if another horn is ready, or to prepare Buffalo for Ymir. Buffalo is allowed as fallback outside Ymir.
+- Crushing Blade knockback positioning now activates at resolution instead of overriding earlier Menace dodges.
+- Overlapping Cavalier hazards use a shared safe area when available. Sequential lane/cone attacks without a shared safe area preposition toward the later escape.
+- Exactly three beasts; manual entry, fight starts, loot and shopping retained.
+
+Verification: builds pass; 1152 roster/rotation checks; 311 BMR checks; eight Third Board module smoke checks.
+Simulated movement was outside all 13 recorded Menace/Valfodr/Steelripper effect shapes. Simulation uses recorded boss positions and does not model changed aggro/movement. No live clear validated yet.
+
+Same profile: Cu Sith, Buffalo, Coeurl; Third Board, First Degree.
+BMR AI OFF, BeastHelper dodge ON, paired RSR Auto. Emergency stop /beasthelper stop.

@@ -1,0 +1,14 @@
+CU SITH PRESERVATION - LATEST ATTEMPT
+Recording ThirdBoardOfTheUnbroken_BST50_Ta_Be_2026_11_08_20_41_43.log
+First Cu Sith began2676HP. Recorded damage in Cavalier:15 boss autos totaling1779 and10 bishop hits totaling443 =2222HP. Snarl at20:42:19 immediately after summoning put Cu Sith into routine tank duty. Challenge at20:43:44 and20:43:59 targeted bishops while Cavalier continued attacking Cu Sith.
+Cavalier/Ymir/Catoblepas/Lakhamu defeated; player later died21:04:37.
+
+Installed RSR7.5.7.130 / BeastHelper0.2.24.0. BMR7.5.7.528 unchanged.
+- Cu Sith no longer gets routine Snarl while player is above criticalHP. Existing timed emergency cast protection still applies; critically injured player still has priority.
+- Challenge can prioritize enemies actually targeting the familiar rather than blindly using the offensive add priority. In Cavalier, boss targeting pet outranks bishops.
+- Cu Sith reserve swap threshold60% if another horn ready (was20%). No replacement-ready horn means no elective dismissal. Controlled attack and defensive holds retained.
+- New checkbox: Heal active Cu Sith / Buffalo / Coeurl with potions. Enabled initially, threshold50%, adjustable. Only Third Board Beastkin clear mode. Uses held G1-G4 Beast Potions on the player's active living trio familiar. Player recovery threshold60% retains priority; cannot heal/revive a dead beast.
+- Item range/target checks now validate the actual potion target, including familiar, rather than always testing self.
+- Existing Thief/Merchant Eye pre-combat preparation, manual shops/rewards/entry, exact trio and emergency stop remain intact.
+
+Builds zero warnings/errors.1188 policy/roster/preparation checks pass. Live validation required for new familiar potion targeting and actual aggro changes; offline tests do not establish a full First Degree clear.

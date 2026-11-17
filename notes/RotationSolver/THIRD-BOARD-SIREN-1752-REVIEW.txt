@@ -1,0 +1,15 @@
+THIRD BOARD FIRST DEGREE - SIREN ATTEMPT 17:52
+Recording ThirdBoardOfTheUnbroken_BST50_Ta_Be_2026_11_08_17_52_28.log
+Cavalier killed 17:55:08; Ymir 17:57:21; Catoblepas 18:05:00; Lakhamu 18:08:42. Siren started 18:09:51; player died 18:11:59. Boss last HP 14558/84698 (17.2%). This exceeded the prior Siren attempt's 23.6% remaining HP, and passed the previous attempt's Ymir failure.
+
+Observed Siren damage: 22 auto-attacks totaling 3356, Song of Torment 1033, six Shambling add hits totaling 384, two Unmooring Melody hits totaling 466. Initial recorded player HP 4981/5746 (86.7%). No recovery item use recorded in Siren; no currently usable recovery item reported once HP fell below threshold.
+Cu Sith started 600/3478 and was dismissed early at critical HP after Borrow. Coeurl started 1486/2167. Later Cu Sith returned at 356/3478. Familiar health depletion persists. First add wave died; this failure was not the previous second-wave bind-add case.
+The Melody cone began from (105.15,-405.15), rotation135 degrees. Player movement began after teleport but only exited after two ticks: 265 and201 damage. This is a remaining positioning gap, not evidence of a wrong 45-degree half-angle.
+
+Installed RSR 7.5.7.128:
+- Cast-timed Snarl hold now includes Siren Song of Torment and Lakhamu Sand Tempest, with actor/cast matching. Existing Ymir casts retained. Hold persists through cast resolution so Challenge cannot immediately undo cover.
+- Beastkin clear mode uses relative player/familiar HP for ordinary tank swaps, avoiding a fixed70% familiar threshold. A Coeurl at68.6% can help a player at63%; an ordinary17% Cu Sith does not automatically tank for a healthy player. Critical-player protection retained.
+BeastHelper0.2.22.0 and BMR7.5.7.527 unchanged. Exact trio and manual entry/loot/shop choices unchanged.
+
+Validation: build zero warnings/errors;1161 roster/rotation/policy checks. Defensive effect and timing require live validation. This patch does NOT fix the late Melody movement gap or supply missing recovery items.
+Next focus: earlier positioning or verified gap-closer use on Melody teleport; familiar recovery/readiness and resource visibility. No promise of a full First Degree clear.

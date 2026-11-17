@@ -1,0 +1,7 @@
+Resurrection Test 4 / 7.5.7.509
+167 offline regression and geometry checks passed. No live validation of the newly added mechanics.
+Added recorded Pure Light corner positioning, Delta Attack corner hold through delayed helper impacts, and Dimensional Shift health preparation. The controller stops chasing Eden during these movement reservations.
+Preserves automatic Basic Instinct/Mighty Guard preparation and the successful Goldor controller.
+Coverage still pauses at Pure Beam (15773). At that message, turn BMR AI Off and play manually while recording. Remaining work: orb beams/Paradise Lost overlap, transition raidwides, Guardian adds/targeting/enrage, Eternal Breath recovery and repeat-cycle validation.
+After reload: /bmrai on once; RSR combat Off; empty BMR AI preset. Healer Mimicry must already be active. Entry, rewards, dialogue and retry remain manual.
+Reference: https://ffxiv.consolegameswiki.com/wiki/Eden%27s_Gate:_Resurrection

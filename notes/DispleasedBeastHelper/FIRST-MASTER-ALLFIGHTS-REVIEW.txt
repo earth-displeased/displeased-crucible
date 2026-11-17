@@ -1,0 +1,84 @@
+FIRST MASTER FIRST DEGREE - ALL-FIGHTS REVIEW (damage avoidance and kill speed) + GUIDE COMPARISON
+Replays: FirstMastersBoard_BST50_Ta_Be_2026_11_12_22_49_41.log (latest, BeastHelper 0.2.35 / RSR 7.5.7.138 /
+BMR 7.5.7.534), compared with 2026-11-12 22:01, 2026-11-11 21:44 and 20:45.
+Review date: 2026-11-12 (Claude). BeastHelper 0.2.36 / RSR 7.5.7.139 / BMR 7.5.7.535 built and policy-tested
+(PASS 1329, 0 errors, BMR 6 known CS0618 warnings). Deployed 23:21:05 (game running, outside the duty; all three
+hot-reloaded; RSR's "Command /rotation not found" ERR on load also appears at game start 20:33 and is harmless). Live
+hashes = build. Backups: backups\*-before-allfights-20261112-232105 (0.2.35 / 7.5.7.138 / 7.5.7.534).
+NOT validated live.
+Item 125 = Ring of Sacrifice (user): fires on its own when the player dies, but only with a living familiar; it has never
+fired because the familiars were already dead. BeastHelper does not use it (correct); name not added.
+
+LATEST RUN (22:49) - route Strix, Gargoyle, Treant, Borgny. Died at Borgny 23:07:28 with Borgny at ~46%.
+  Fight        dur   dealt/s  player took  idle*   main damage taken
+  Strix         85s   778      2,096        12s    autos only
+  Gargoyle     181s   470      2,671        74s    Sweeping Evisceration 1,327; autos 699
+  Treant       134s  1,105     3,970        13s    autos 1,709; Acorn Bomb 1,157; Rustling Breeze 931
+  Borgny       132s   530      6,897        47s    Toxic Vomit 3,758 (5 hits); autos 1,168; Noxious Explosion 990; Touchdown 981
+  * idle = time in gaps of more than 4s with no player action (minus a 2.5s GCD per gap).
+
+WHAT WORKED (validated live in 22:49)
+- 0.2.35/7.5.7.534 Borgny AOE fixes: 0 Poison Cloud hits and 0 Toxic Breath hits (22:01: 5,118 + 907).
+- Forced Toxic Mass target: targeted +0.03s after spawn (22:01: first mass never targeted).
+- Familiar recovery ran (preset reselected): potions on Coeurl at 22:51:13, 22:59:41, 22:59:43.
+
+FINDINGS
+1. Idle time is the biggest speed loss. Every gap >4s coincides with dodging and 8-35y distance to the target (BST
+   attacks are melee). Treant and Corpse Flower modules add a melee-range goal zone (FirstMasterCombatHints) and idle
+   0-31s; Gargoyle (no AI hints at all), Strix and Borgny had none: Gargoyle 74s/181s (22:01: 88s/194s), Borgny 47s/132s.
+2. Snarl (Cover) redirects Borgny/Gargoyle single-target hits to the familiar - 4 runs, every case:
+   Sweeping Evisceration (50933, at cast start +8.9-9.0s): 3/3 covered went to the pet, 8 uncovered hit the player
+   for 689-1,443. Toxic Vomit (48809/48810, hits at +3.5/+6.6/+9.7/+12.8s): all covered hits went to the pet, the player
+   took 2,064-3,248 per uncovered cast (~3.7k per Borgny attempt). Salivous Snap (48822, +7.0s): 1/1 covered to pet;
+   player 733-1,610 otherwise. None of these were in the cover list.
+3. Treant finish at 10% was too low: Biloko spawned at 17.9%, killed first in 23s while two 4,805 heals landed; Treant
+   died 46s after the spawn, estimated ~26s by staying on Treant.
+4. Toxic Mass cannot be damaged for ~5.5s after spawn (first damage +5.5s in every run, even targeted at +0.03s).
+   Mass took 7,994 and exploded with 5,426 left; Coeurl despawned mid-window (23:06:54); player idle 14.5s while dodging
+   Cauterize/Touchdown. Melee goal (finding 1) should help.
+5. Item economy: entered Borgny at 12.2% HP (pre-pull kit + G3 brought it back); after that only Tome of the Impervious
+   (137) and an unknown "Item 125" were held. HP below 55% from ~23:05:56 with no heal, yet the Tome was never used.
+   Item 137 has never been used in any logged run (also held at 20:39); "Item 125" held since 2026-11-10, unknown.
+   Three potions went to Coeurl at Strix/Gargoyle while the player later had none.
+6. Touchdown knockback hit in every Borgny attempt (649-1,217). Not changed - mechanic not modelled well enough.
+7. Toxic Vomit puddles: the module's own pathing; unchanged.
+
+GUIDE COMPARISON (online, 2026-11-12)
+Read: eorzeantavern.com First Master's Board + Items pages; ffxiv.consolegameswiki.com First Master's Board (truncated);
+Icy Veins BST Crucible guide returned HTTP 403 (only its search snippet was seen). No source gives per-mechanic
+strategy for this board. Useful points:
+- Icy Veins (snippet): Toxic Breath - "move to the wall behind Borgny and stand to the sides when it jumps". Matches what
+  the BMR module does (safe donut hole at the origin behind the boss / outside the 118-degree wedge).
+- Eorzean Tavern: Borgny is Earth-weak, Toxic Mass Water-weak; Strix piercing; Treant blunt; Diremite/Biloko ice;
+  Golem water. Our fang use is a fixed order, not weakness-matched (Water fang on the mass would match). Not changed:
+  no replay evidence yet on how much weakness adds to fang damage.
+- Eorzean Tavern: Snarl = "your beast takes top enmity and absorbs damage intended for you"; since the 17 Sept 2026
+  hotfix Parting Blow / Final Sting end Cover early. RSR already blocks Parting Blow during a cover hold.
+- Items: G2 soul serums last 300s (matches the user's report); Crucible Antidote cures poison and heals 25%;
+  Tempered Constitution +20% max HP for the fight; Blessed Horn revives a familiar on the board.
+- Scoring: Legendary minimum 18,750 points; remaining HP and bonuses count. Nothing contradicts our approach.
+- Nothing in the guides about Treant adds kill order, Gargoyle positioning, or Toxic Mass timing.
+
+CHANGES
+RSR 7.5.7.139 - Basic/Helpers/FirstMasterDefensePolicy.cs
+  Cover casts added: Sweeping Evisceration (0x4CC2/48717, hold 2.5s after cast), Toxic Vomit (0x4CD8/48809, hold
+  10.5s after cast = through the 4th hit, inside Snarl's 15s), Salivous Snap (0x4CD8/48822, 1.5s). Existing rules apply
+  (pet >= 30% HP or player <= 30%). Trade-off: summons/Challenge wait during the hold.
+BMR 7.5.7.535
+  a) FirstMasterCombatHints.ApproachPriorityTarget(approach) + StrixPiece, GargoylePiece (new hints; Gargoyle priority 1,
+     orbs untouched), BorgnyTheVenomous: forced priority target + weak melee goal (weight 2; forbidden zones win). Borgny
+     drops the goal while baiting Toxic Vomit or Wriggling Phlegm.
+  b) FirstMasterTargetPolicy: Treant finish threshold 10% -> 20%.
+BeastHelper 0.2.36 - CrucibleItemTimingPolicy.cs, CrucibleRecoveryItemService.cs
+  a) First Master profile: familiar potions only when 2+ player recovery slots are held (last one kept for the player).
+  b) Self-only emergency items that fail BeastHelper's own range check are retried once per 20s without it (target for
+     Tome of the Impervious). Logs "requested without BeastHelper's range check (unverified...)".
+Tests: 11 new checks.
+
+NEXT RUN
+1. Deployed. Confirm BeastHelper shows 0.2.36. Reselecting the preset is not required (no new defaults).
+2. Watch: idle time at Gargoyle/Borgny; "[First Master defense] Preparing pet cover for Borgny..., cast 48809";
+   whether the Tome log line appears and the Blink status (4849) follows; Treant ignoring a Biloko below 20%.
+3. Idea (not implemented): the Ring of Sacrifice needs a living familiar at the moment of death. Below ~15% HP with
+   no heal left, keeping a pet summoned could turn a death into a save. Needs evidence of what the ring does first.
+4. Eat food before entering (food runs: autos 110-170; no-food run 20:45: 580-750).

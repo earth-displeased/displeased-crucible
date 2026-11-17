@@ -1,0 +1,47 @@
+﻿SECOND MASTER'S BOARD - PREPARATION (goal: Legendary, First Degree)
+Date 2026-11-13 (Claude). BeastHelper 0.2.37 built and tested (PASS 1353, 0 warnings/errors). RSR 7.5.7.141 / BMR
+7.5.7.536 unchanged. NOT validated live.
+Deployed 2026-11-13 16:39:37 (game running, hot-reloaded 16:39:39, hashes = build). Backup:
+backups\BeastHelper-before-secondmaster-20261113-163937 (0.2.36). No Second Master replay exists yet.
+
+GUIDE RESEARCH (2026-11-13)
+Read: Eorzean Tavern (board page + Crucible page), Console Games Wiki (board + Crucible pages), FullBoosts. Icy Veins
+returned 403. No source names a team for a Legendary / First Degree clear. Eorzean lists a six-beast element-coverage
+set (Zu, Behemoth, Karlabos, Dodo, Flying Trap, Cu Sith) - coverage only, breaks Beast Squad III.
+Board: 14 moves (13 via the middle final branch), boss Lauda the Spellcleaver + Thanatos piece (Lightning), 3 camps
+(Move 3 Left, Move 6, Move 12 Middle), roster limit 15, synced rank 25, avg item level 82 required.
+Score: enemy 250, elite 800, boss 1,000, moves max 5,000, remaining HP; bonuses as First Master plus board-only
+Infinity and Beyond I-III (150/300/450 wiki vs 250/500/750 Eorzean/FullBoosts) and Feed the Bold (1,500 wiki vs 750).
+Legendary minimum: 18,500 (board infobox) vs 18,766 (wiki main page, Master's boards) - conflicting.
+
+DECISION: Cu Sith (1) / Behemoth (50) / Coeurl (33), as on First Master: Beast Squad III 4,250 + Beastkin Gambit 750,
+and all First Master familiar automation (Snarl cover, potions, release targeting) is built around them.
+Elements: Slashing (Cu Sith), Fire/Lightning (Behemoth), Lightning (Coeurl). Not covered: Earth, Wind, Blunt, Water, Ice.
+
+CHANGE - BeastHelper 0.2.37
+- New CrucibleTeamMode.SecondMasterLegendary (appended, saved values unchanged) and SecondMasterLegendaryProfile:
+  same settings as FirstMasterLegendaryProfile.Apply, board 特二盤, territory 1343.
+- Uses the trio/whistle/goal logic, familiar potion recovery and "keep last potion for the player" rule
+  (SecondMasterLegendaryProfile.MasterTrioActive). First Master-only logic is NOT enabled: G2 serum at Borgny, Borgny
+  fang reserve, RSR "FirstMasterLegendaryActive" IPC (all territory 1342).
+- Combat waits outside territory 1343; BMR movement restricted to 1343.
+- UI: button "Prepare Second Master's Board - Legendary (Cu Sith / Behemoth / Coeurl)" and roster-mode entry; both
+  also switch on BMR's experimental Second Master modules (Medusa, Chimera, Lauda are WIP).
+- RSR: no Second Master-specific logic yet (no cover list, no priorities) - plain BST rotation. Needs replay evidence.
+
+NEXT RUN
+1. Deploy 0.2.37 (BeastHelper only). Outside the duty click the new Prepare button (this IS a new default: click it).
+2. /bmrai off, BMR replay recording on. Choose First Degree; entry, battles, tiles, camps, shops manual.
+3. After the run: screenshot the result screen, wait a few minutes for the replay to finish writing.
+
+ROUTE (recommended to the user 2026-11-13; board map from Console Games Wiki, gamerescape 403, no published Legendary route)
+BMR modules exist for: Flauros, Mind Flayer, Boogyman, Drake, Atomos, Durga, Sphinx, Gigantis (Contributed) and Medusa,
+Chimera, Lauda (WIP). None for Swordsmog (12 Left), Behemoth (13 Left), King Ahriman (13 Right) - Order.txt lists them.
+  1 Flauros (Enemy 250) -> 2 Left Mind Flayer (Elite 800, Slashing weak = Cu Sith) -> 3 Middle Treasure ->
+  4 Middle Drake group (Enemy 250) -> 5 Durga (Elite 800) -> 6 Campsite (rest only if needed) -> 7 Right Shop ->
+  8 Treasure -> 9 Right Sphinx (Enemy 250, Slashing weak) -> 10 Gigantis (Enemy 250) -> 11 Shop ->
+  12 Middle Campsite (skips 13) -> 14 Lauda + Thanatos (Boss 1,000; Thanatos Lightning weak = Behemoth/Coeurl).
+Nodes 2,600 + boss 1,000. Estimate with First Master's bonus set (11,500) + moves 5,000 + ~700 HP: ~20,800; without
+Unbeastable ~19,550. Avoided: 7 Left Medusa / 9 Left Chimera (WIP elites), 12 Left / 13 (no modules), 3 Left camp.
+Safer variant: 2 Right (Shop) instead of the Mind Flayer elite (-800). Assumption: Moves Made stays 100% when 13 is
+skipped (First Master gave 100% on routes of different lengths) - unverified for this board.

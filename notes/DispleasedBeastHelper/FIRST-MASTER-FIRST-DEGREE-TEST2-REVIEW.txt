@@ -1,0 +1,28 @@
+FIRST MASTER FIRST DEGREE TEST 2 - SUSTAIN / FAMILIAR RECOVERY
+Replay: FirstMastersBoard_BST50_Ta_Be_2026_11_10_23_59_10.log
+Review date: 2026-11-11, America/Los_Angeles.
+
+CONFIRMED PROGRESS
+No Final Sting effect completed. No Nightmare status reached the player. No player death before Treant. The first Treant Meteor was held until six Slugs existed, five within 10 yalms, then cleared five of that wave. Snarl/Challenge damage sharing appeared throughout the run. The previous Hawk targeting, pre-Acorn cover and Meteor timing changes worked in these respects.
+The sole player death was 00:13:41. Treant remained at 23,974/96,115 HP (approximately 25%) on its last recorded HP update.
+
+WHY TREANT STILL FAILED
+This was sustained damage/resource depletion, not the previous Nightmare paralysis. Direct recorded player damage during Treant: Sapling Stone 5,044; Treant auto-attacks 2,710; Slug auto-attacks 1,223. No direct avoidable AoE damage was found in that interval.
+The first Sapling lived 00:10:58-00:11:51, despite sustained player targeting. Biloko lived 00:11:34-00:12:13 and completed three Natural Nurture casts while Sapling was still being killed. A second Sapling appeared at 00:13:20 and remained full HP at the end. Faster magical add damage is still an optimization to investigate if better recovery does not suffice; this update does not claim to solve all DPS gaps.
+Core beasts entered Treant depleted: Cu Sith first appeared at 1,509/3,171 HP; Behemoth at 648/3,492 HP. Coeurl had no further summon after the Corpse Flower encounter. Damage sharing helped the player survive but drew from already-low familiar HP.
+The item log eventually showed no usable healing, only Tome of the Impervious and item 108. Available mitigation is not a replacement for healing stock; avoid assuming a held item is usable or useful against every damage type. Actor death/despawn flags alone are not counted as actual familiar incapacitations.
+
+MISSING SUPPORT FOUND / UPDATE
+Familiar potion healing was restricted to the Third Board Beastkin mode and recognized Cu Sith, Buffalo and Coeurl. It did not support the First Master profile or Behemoth.
+BeastHelper 0.2.33 adds that support for Cu Sith / Behemoth / Coeurl in both First Master profiles. It uses the existing familiar recovery checkbox and G1-G4 Beast Potions/conditional cures. Player recovery retains priority. It can only heal a living, active familiar; it cannot restore an unsummoned or incapacitated beast.
+Reselecting the three-beast First Master Legendary preset now enables familiar recovery below 45% HP. Merely reloading does not overwrite the saved settings. Alternatively enable the familiar-healing checkbox and set 45% manually. The First Master XP option continues to preserve the current recovery settings when selected.
+RSR 7.5.7.137 only reduces repeated per-frame defense request logs; combat behavior remains the tested Hawk/cover/Meteor behavior. BMR remains 7.5.7.532.
+
+NEXT RUN
+Reselect First Master Legendary (initial test) outside the duty, or explicitly enable active-familiar potion healing at 45%. Verify player healing and recovery inventory before entry.
+Use the available campsite to restore depleted core beasts, and buy healing items manually at shops. These menus remain manual. A three-beast First Degree run cannot sustain prolonged pet cover indefinitely if pets enter the next encounter depleted and recovery stock is exhausted.
+Record the next attempt. Check familiar healing actually executes, compare pet HP entering Treant, then measure Sapling lifetime and Biloko heal completions. First Degree clear remains unvalidated.
+
+VERIFICATION
+BeastHelper and RSR builds: zero warnings/errors. 1,280 policy checks passed, including First Master Behemoth recognition, separation from Third Board Buffalo, correct mode gating and preset familiar recovery default. This validates the code path/policy, not a new live clear.
+Updated existing plugin folders with verified file hashes; previous files backed up. No live configuration JSON edited. The new threshold applies when you select the profile again or change the checkbox yourself.

@@ -1,0 +1,7 @@
+Board Two combat update: BMR 7.5.7.522 + RSR 7.5.7.122
+Manticore: preview charge lanes and first hammer together, prefer three yalms of clearance, then react to the opposite hammer. Familiar safety remains subject to live positioning.
+Voidmancer: prioritize a reachable targetable zombie for melee attacks; do not chase remote zombies. Evaluate Mindjack's full 18-yalm path against the inner border and Malady pools. Stop RSR action-facing near forced movement. Request inward recovery outside the safe border when not confused or forced-marching.
+Vilekin: allow Wespe Final Sting when Mantis physical vulnerability has <=5 seconds left, allowing for pet execution delay. Preserve guarded-target and paired-boss rules; retain low-enemy-HP and endangered-familiar escape conditions.
+No item use, rewards, shopping, entry or tile automation added. Current trio unchanged.
+Validation: both plugin builds passed; fixed-trio/score-policy checks passed; 293 BMR policy and production-geometry checks passed; latest replay reproduced 1,481 decision frames across Manticore, Wyvern and Voidmancer. This is offline validation, not a live clear.
+Use BeastHelper's Second Board score mode with BMR dodge ON and BMR AI OFF. Emergency stop: /beasthelper stop.

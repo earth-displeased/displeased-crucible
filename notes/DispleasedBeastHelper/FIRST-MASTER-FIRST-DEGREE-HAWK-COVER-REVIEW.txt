@@ -1,0 +1,30 @@
+FIRST MASTER FIRST DEGREE TEST - QUEEN HAWK / PET COVER UPDATE
+Replay: FirstMastersBoard_BST50_Ta_Be_2026_11_10_23_28_10.log
+Installed BeastHelper 0.2.32 / RSR 7.5.7.136 / BMR 7.5.7.532.
+
+WHAT THE REPLAY SHOWED
+Corpse Flower: two player deaths at 23:31:56 and 23:33:08, followed by Ring of Sacrifice revivals. The second Queen Hawk completed Final Sting at 23:33:26 (801 direct damage). Thus the earlier two deaths preceded this completed Sting; sustained attacks/other damage also exhausted HP. Hawk auto-attacks contributed 834 direct damage; Corpse Flower autos 3,017 and Rotten Stench 2,102. The player overwhelmingly targeted the boss, not the Hawks.
+The old BMR module assigned a Hawk priority number but did not force movement toward it, and RSR's First Master urgent targeting previously only recognized Treant adds. Both halves needed updating.
+
+Treant: Acorn Bomb landed 23:40:18.374 (937 damage). Nightmare status 5383 was applied 23:40:19.532 and lasted until 23:40:34.533. It prevents actions, and the recorded player remained effectively stationary throughout. BMR replay navigation still generated escape destinations during the next Rustling Breeze; the player was incapacitated, rather than the preset having disappeared first. Rustling Breeze hit at 23:40:34.616 for 899 and the player died 23:40:34.800. The preset cleared after death and was restored on revival at 23:40:37. A later final death occurred at 23:41:27 after continued damage and no usable healing items.
+Guide cross-check: https://www.icy-veins.com/ffxiv/beastmaster-crucible-of-the-unbroken specifically recommends Snarl/pet cover for Acorn Bomb. Local game data identifies 5383 as Nightmare, preventing action execution.
+
+PET COVER GAP
+Generic RSR tank swapping was optional and limited by its saved last-horn setting. First Master did not opt into the controlled policy used by the earlier custom board assists. No proactive cover was protecting these mechanics. Fixing movement preset ownership alone would not prevent Nightmare.
+
+CHANGES
+1. Queen Hawk is an urgent priority over Corpse Flower for both BMR movement and RSR action selection. AoE center scoring cannot silently substitute the boss for an available urgent Hawk. Range, target validity and hazard avoidance still apply.
+2. A Final Sting cast triggers a best-effort Smash Axe stun when the native action checks permit it and the selected target is actually Queen Hawk. It is not treated as a normally interruptible cast. Killing the add remains the primary strategy; pet cover is fallback.
+3. First Master profiles now enable controlled damage sharing on every horn, independently of the generic opt-in and last-horn restriction. Healthy familiars can cover once the player is at or below 75% HP and the familiar has at least 45% HP and is at least ten percentage points healthier. Below 30% player HP, cover is an emergency option. Damage is taken back when the player is above 40% HP and the familiar is at/below 30% or at least twenty percentage points less healthy. This avoids deliberately draining a weak familiar for a healthy player, while prioritizing the player's survival in emergencies.
+4. Explicit pre-cast pet cover for Acorn Bomb, Final Sting fallback and Gargoyle's Grim Fate. If necessary, try summoning a usable core beast for the protected cast; this overrides Meteor reservation for immediate survival. The current beast is not dismissed or challenged away during the cast/resolve window. Grim Fate's hold covers its follow-up hits.
+5. Diagnostics identify Nightmare as an action/movement blocker and log protected-cast preparation and HP-sharing decisions. They no longer merely suggest RSR/pathing stalled when Nightmare is present.
+6. Existing Meteor wave timing, ordinary Treant add priority, XP roster selection, manual entry/shops/rewards and emergency stop remain in place. First Master RSR behavior is gated to the selected First Master profiles. No live configuration JSON edited.
+
+LIMITS / NEXT ATTEMPT
+These changes are built and tested, not a verified First Degree clear. Cover depends on a living, usable familiar, action readiness and sufficient time before the hit. It can still kill a familiar in an emergency. Native resistance/range/cooldown can prevent a stun. No change can manufacture healing items; replenish manually at shops/camps as needed. First Degree's longer fights remain a sustain challenge.
+Use the three-beast Legendary preset for the Legendary attempt, not the full-roster XP preset. Keep replay recording on. Inspect Queen Hawk kills/Sting completions, Snarl/Challenge logs, and whether Nightmare reaches the player during the next Treant fight.
+
+VERIFICATION
+All three builds passed. BeastHelper/RSR zero warnings; BMR six existing unrelated deprecated API warnings.
+1,275 policy checks passed. Module scenarios verify a distant Queen Hawk is selected over the boss with a movement goal, and Treant's add transitions remain correct. All ten First Master modules initialize.
+Updated hints evaluated against 2,551 recorded frames: Queen Hawk selected for 220 frames from its availability through the recorded final cast. This verifies selection against recorded events, not counterfactual kills or successful cover execution. Live validation is still needed.

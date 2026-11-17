@@ -1,0 +1,17 @@
+TREANT BEHEMOTH / METEOR TIMING UPDATE
+RSR 7.5.7.135. BeastHelper stays 0.2.30; BMR stays 7.5.7.531.
+
+Only applies during Treant in the opted-in First Master profile.
+- Reserve Behemoth while other beasts and player attacks continue.
+- Release the summon reserve when at least three live Slugs are within 10 yalms of the player.
+- For a smaller surviving wave, allow a nearby Slug after five seconds of gathering.
+- A 30-second reserve limit, player HP below 35%, or boss HP below 10% prevents indefinite waiting.
+- When the wave is ready, prefer Behemoth, dismissing the current beast if necessary. Normal roster order remains available for the other beasts while waiting.
+- If Behemoth is already out, wait briefly for the cluster before ordering Meteor; release after six seconds or in an emergency even if gathering was unsuccessful.
+- Meteor chooses its target to maximize nearby Slugs caught, then total Slugs caught, using a 17.5-yalm planning radius for the actual 18-yalm effect. Existing action range/validity/collateral checks remain in effect. Enemy movement can still change coverage before impact.
+- Keep Behemoth present for four seconds after its One with Nature is consumed, allowing the delayed attack to execute.
+- Existing Sapling/Biloko/add kill priority remains for ordinary attacks. Only Meteor gets the cluster targeting override.
+- Diagnostics include reservation, nearby Slug count, summon readiness and execution hold messages prefixed [First Master Treant].
+
+Validation: RSR Release build zero warnings/errors; 1,260 policy/regression checks passed. New cases cover no-wave reservation, distant Slugs, nearby clusters, sparse waves, execution hold, timeout, emergency release and encounter reset. Not yet validated by a live run.
+Installed to the existing RSR-FirstBoard-Assist folder. Previous files backed up separately. No live configuration JSON edited; no entry, rewards, shops or roster settings changed.

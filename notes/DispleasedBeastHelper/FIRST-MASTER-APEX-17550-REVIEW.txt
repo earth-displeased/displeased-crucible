@@ -1,0 +1,124 @@
+FIRST MASTER FIRST DEGREE - SECOND CLEAR, APEX 17,550 (result screen recorded)
+Replay: FirstMastersBoard_BST50_Ta_Be_2026_11_13_08_26_24.log (BeastHelper 0.2.36 / RSR 7.5.7.139 / BMR 7.5.7.535)
+Review date: 2026-11-13 (Claude). Clear validated live (user screenshot). Legendary needs 18,750: short by 1,200.
+
+RESULT SCREEN
+  Performance 7,550: Moves Made 100% 5,000; Elite Enemy x1 800; Enemy x3 750; Boss x1 1,000; Remaining HP 821 -> 0.
+  Bonus 10,000: Willing Sacrifice I 250; Starve the Fever 750; First Degree 4,000; Beast Squad III 4,250;
+                Beastkin Gambit 750.
+  Missing: Unbeastable 1,250 (no Damage Down / Vulnerability Up), Sleepless Survival 1,000 (no camp rest),
+  Willing Sacrifice II/III / No Beast Left Behind (online: I/II/III = 3/2/1 familiars incapacitated at the clear,
+  250/500/750; none incapacitated = No Beast Left Behind 1,000). Remaining HP scored 0 at 821/9,055 (9%); the
+  23:35 clear ended at 4,542 - scale unknown.
+
+FIGHTS
+  Fight          dur   dealt/s  player took  idle
+  Strix           88s   766      2,940       10s
+  Corpse Flower  141s   836      3,326       32s
+  Gargoyle       131s   679      3,706       28s
+  Treant         124s  1,255     3,667        0s   (Biloko spawned; killed in the fight)
+  Borgny         ~205s  659/631  5,025       39s   (853 + 4,172 over two windows)
+
+ROOT CAUSE OF LOST UNBEASTABLE (the 1,250 that would have made 18,800)
+The only Damage Down (4874) of the run: 08:42:25, from Noxious Explosion (48821) of the first Toxic Mass, 4.5s after it
+spawned and after only 1,190 damage. The 23:35 clear had no 4874 at all.
+New finding (all 4 recorded explosions): the mass idles ~3.3s, then crawls at 1.0y/s straight to the NEAREST Toxic
+Vomit puddle (0x1EB704) and explodes when its centre is 5.3y from the puddle centre:
+  22:01 #1 24.1y -> +21.9s; 22:01 #2 32.1y -> +30.0s; 22:49 27.8y -> +25.9s; 08:26 #1 6.4y -> +4.5s.
+  Killed masses (23:35 x2) started 21.2y / 30.1y away. The earlier belief "not damageable before +5.5s" was wrong:
+  it is distance - damage starts when the player reaches it (23:35: +0.36s).
+The mass spawns at the Wriggling Phlegm location, which locks 5.37-5.41s after the lock-on icon (4 of 4). At the icon
+(08:42:10) the player stood at 14.2y clearance; the old goal (max clearance anywhere) chased a 22.4y spot 33y away
+round the puddles and the lock caught the player at 6.4y.
+
+CHANGE - BMR 7.5.7.536
+  BorgnyAoePolicy: MassExplodeClearance 5.3, MassIdleSeconds 3.3, MassSecondsToExplode, PhlegmLockAfterBaitActivation
+  0.3s, PhlegmReachSpeed 5y/s, PhlegmReachMargin 0.8s, PhlegmReachRadius, PhlegmBaitScore.
+  WrigglingPhlegmBait goal: best puddle clearance among cells reachable before the lock (5y/s x (time to lock - 0.8s));
+  unreachable cells rank below all reachable ones. 08:26 case: a 16.3y spot 7.3y away (mass ~14s to explode) instead
+  of 6.4y. Reachability in all 8 recorded baits: 16y+ clearance was within 15.1y every time.
+  Tests: 8 new checks; PASS 1337. BMR build 0 errors, 6 known warnings. Built and tested; NOT validated live.
+  Deployed 2026-11-13 14:52:39 (game running, hot-reloaded 14:52:46, hashes = build). Backup:
+  backups\BossModReborn-before-phlegmreach-20261113-145239 (7.5.7.535).
+
+NOT CHANGED (ideas, no code)
+- Familiars alive at the clear (+250 per familiar up to +750, or 1,000 with none down): all three were down at the end.
+  Covers (Snarl) trade pet HP for player HP; needs a separate look.
+- Sleepless Survival 1,000: camps are manual.
+- Remaining HP: ended at 821 with no items left.
+
+NEXT RUN
+BMR 7.5.7.536 deployed (only BMR changed). No preset reselect needed. Watch the Phlegm bait spot and whether the mass
+dies before exploding; record the result screen again.
+
+FOLLOW-UP ATTEMPT 2026-11-13 14:57 (FirstMastersBoard_BST50_Ta_Be_2026_11_13_14_57_50.log) - FAILED, player died 15:19:07 at Borgny
+- Phlegm bait fix validated live: baits locked at 19.6y and 33.5y puddle clearance (08:26: 6.4y).
+- Explosion model validated: mass #1 (19.6y) exploded at +17.47s (predicted 17.6s). It was ~99% dead: 13,754 damage
+  dealt by 15:16:52.9 (max HP 13,420), but Cu Sith's burst landed after the explosion at 15:16:53.6. Attack gap
+  15:16:41.4-49.0 (7.6s, Cauterize dodge); no familiar out until ~15:16:51 (Cu Sith entered Borgny at 1.2% HP and died
+  at the pull, Coeurl died 15:15:49).
+- Death cause: Borgny auto-attacks (49680) hit the player for 845-1,189 from the first hit (18 hits, 15,846). Every
+  earlier run: 99-157 average (food in all; serum or not). Gargoyle/Treant autos were normal this run (105/123).
+  Difference found: a different set of Crucible buff statuses at the pull (5201, 5204, 5226, 5228, 5240 vs 5205-5208,
+  5247 earlier) and a new Borgny status 5024 at 15:15:27. Random loadout, no code cause identified (RSR and
+  BeastHelper unchanged since 08:26; BMR change only affects the bait spot). No healing items left after 15:15:51.
+No code changes after this attempt.
+User: no G2 Antipoison serum this run. Check: serum (4961) is not what kept autos low - runs without it (21:44 avg 99,
+22:49 avg 116) and 08:26 before it was used (123) were normal. Status 5205 was active at every earlier Borgny pull
+(21:44, 22:01, 22:49, 23:35, 08:26) and missing only at 14:57 (the 880-average run). Probably a random Crucible
+gear/relic buff; name unknown - ask the user what it is.
+
+DEBUFF / AOE REVIEW OF THE 14:57 ATTEMPT (user: "kept getting hit by debuffs from AOE attacks")
+Debuffs on the player, by source (statuses named via xivapi where available):
+- Strix: Levitation (12) / Imp (1134) - from the Quakes / Floods puddles; these are the mechanic's intended resolution.
+- Corpse Flower: Briar (5176) while standing in the thorn puddle during Floral Trap (intended: Devour then missed the
+  player every time) and Bind (2518) from Floral Trap itself (unavoidable pull).
+- Gargoyle: Growing Dread (5178) from soaking Malady orbs - deliberate (each orb left gives the boss Damage Up); never
+  reached Hysteria. Bleeding (3077/3078) from Fivefold Fallout knockback (raidwide).
+- Borgny: Toxicosis (5183) from uncovered Toxic Vomit hits; Damage Down (4874) from the Toxic Mass explosion.
+None of these except 4874 is Damage Down / Vulnerability Up.
+Damage the familiar can take instead (Snarl, status 2413), measured over 10 replays (pet hit while covered / player hit):
+  Strix Darkness 9 / 1 (1,940 at 14:57, no familiar out); Fivefold Fallout 12 / 70 (13,518); Touchdown 1 / 13 (14,087).
+
+CHANGE - RSR 7.5.7.140 (FirstMasterDefensePolicy)
+  Cover casts added: Strix On the Properties of Darkness (0x4CB6/48669), Gargoyle Fivefold Fallout (0x4CC2/50695, hold
+  10s after cast = through the knockback hit at +12.0s) and its knockback cast (48724), Borgny Touchdown (0x4CD8/48815).
+  Existing rules apply (summon if no familiar; pet >= 30% or player <= 30%). Trade-off: familiars take ~1,350 per
+  Gargoyle and ~1,100 per Touchdown more, and summons wait during the hold.
+  Tests: 5 new checks; PASS 1342. RSR build 0 errors, 0 warnings. Built and tested; NOT validated live.
+  Deployed 2026-11-13 15:29:57 (game running, hot-reloaded 15:29:59, hashes = build). Backup:
+  backups\RotationSolver-before-morecover-20261113-152957 (7.5.7.139).
+
+ATTEMPT 2026-11-13 15:46 - CLEAR, APEX 18,478 (272 short). BeastHelper 0.2.36 / RSR 7.5.7.140 / BMR 7.5.7.536.
+Result screen: Moves 5,000; Elite x1 800; Enemy x2 500; Boss 1,000; Remaining HP 6,501 -> 928. Bonus 10,250: Willing
+Sacrifice II 500, Starve the Fever 750, First Degree 4,000, Beast Squad III 4,250, Beastkin Gambit 750.
+Missing again: Unbeastable 1,250. Route had 4 fights (no Corpse Flower): Enemy x2 = 250 less than the 08:26 run.
+Remaining HP: 821 -> 0 points, 6,501 -> 928 points.
+User: used the Tome of the Impervious by hand at the end against a tankbuster, and a fang by hand.
+REPLAY INCOMPLETE: FirstMastersBoard_..._15_46_41.log stops at 15:58:41 (20s into Borgny); file last written 15:58:43,
+no error in dalamud.log. Borgny (15:58:21-16:02:44) is only visible through plugin log lines:
+  masses targeted 15:59:46 (tracked until 16:00:00, 14s) and 16:01:32 (tracked until 16:02:02, 30s); covers requested
+  for 48809 x2, 48815 (Touchdown, new), 48822; items 140 + 80 at ~54% HP; no consumables left by 16:02:19.
+  BeastHelper used no fang on either mass (none logged). Cause of the lost Unbeastable cannot be confirmed without the
+  replay; the 30s second mass is the likeliest (explosion = Damage Down).
+Strix/Gargoyle/Treant: no Damage Down / Vulnerability Up on the player (replay). Gargoyle Fivefold: player took 1,044
+(5 hits) vs 1,545 (08:26) and 1,872 (14:57); Strix Darkness did not hit the player (new cover).
+CORRECTION: the replay was not incomplete - I read it while BMR was still writing it (final file 3.6 MB, 16:05:11).
+User: fang was used by hand on Borgny; nothing in BMR was changed.
+Full replay, Borgny:
+- Mass 1 (bait 19.6y clearance): killed at +12.9s (13,879 dealt).
+- Mass 2 (bait at 16:01:28, ~26y clearance): exploded at +24.5s with 8,429 dealt (4,991 left) -> Damage Down 4874 at
+  16:01:57 = the lost Unbeastable. Release 47093 at 16:01:32.482, 0.03s after the player targeted the mass, while Cu Sith
+  still targeted Borgny: its burst 44935 (1,889) hit Borgny; Cu Sith only switched to the mass at 16:01:34.4. No fang on
+  the mass (BeastHelper reserves fangs for it; the user's fang went to Borgny). Fangs hit masses for 7,416-7,623 in
+  earlier runs (47006/47007 at +0.1s).
+- 16:02:08.6 release 47093 then Toxic Vomit (cast 16:02:09.1) hit the player 4x (2,265) with no familiar to cover.
+
+CHANGE - RSR 7.5.7.141 (BorgnyToxicMassPolicy.MassTargeted, BST_Reborn.ObserveBorgnyMass)
+  The mass counts as targeted for the summon/release burst only when the familiar also targets it (or no familiar is
+  out). Until then the existing hold stays (bounded by MassWaitSeconds 12s).
+  BorgnyToxicMassPolicy.cs normalised to BOM + CRLF. Tests: 4 new checks; PASS 1346. Build 0 errors, 0 warnings.
+  Built and tested; NOT validated live.
+  Deployed 2026-11-13 16:10:46 (game running, hot-reloaded 16:10:48, hashes = build). Backup:
+  backups\RotationSolver-before-masstarget-20261113-161046 (7.5.7.140).
+ADVICE: leave fangs to BeastHelper during Borgny (it fires them on the Toxic Mass).

@@ -1,0 +1,52 @@
+﻿SECOND MASTER'S BOARD - ATTEMPT 7 REVIEW (2026-11-13 23:11)
+================================================================
+Replay: SecondMastersBoard_BST50_Ta_Be_2026_11_13_23_11_33.log (finished writing 23:33:00)
+Versions live: BeastHelper 0.2.39, RSR 7.5.7.144, BMR 7.5.7.540.
+Result: player died at Lauda 23:32:39 during Searing Axe (Lauda ~40% when Searing Axe started at 23:32:12.9).
+User report: "the character didn't move during the Lauda fight. The screen shook like the automation was going back and
+forth really fast" and "when the magicked blades spawned, my character got one low then moved away just before it died".
+
+FIGHTS: Flauros 95s idle 0s | Drake 178s idle 18s | Durga 130s idle 17s | Sphinx 52s+11s | Gigantis 96s idle 7s |
+Lauda 203s idle 41s.
+Debuffs: Gigantis Damage Down x1 only (Rupture Fire 23:26:59; previous run x8 + x4 from small slimes); Thanatos Infernal
+Pain Vulnerability Up x2 23:30:58 (1,216 + 1,693).
+
+1. SHAKING IN PLACE (Lauda) - cause found
+   Lauda module AutoAttack component forbids a 9y / 110-degree cone toward Lauda's target whenever that target is not the
+   player. On BST a familiar usually holds Lauda, so the player was kept out of melee and, as the cone swung with the
+   familiar, flipped facing every ~25ms: 23:31:01-06 at (520.6,-429.0), exactly 9.0y south of Lauda (target Cu Sith since
+   23:30:59.5). Whenever Lauda targeted a familiar the player was >5y from her 33 of 52s (22:39 run: 13 of 16s).
+   Her auto-attack on the player costs ~100-160; the module comment already says a hit is fine.
+   FIX (BMR): AutoAttack AI hint skipped for BST.
+
+2. MAGICKED BLADE ABANDONED - cause found
+   Blades spawned 23:32:07 (11,002 HP each). Player target alternated Lauda/blade every ~8ms 23:32:21.9-24.2 and
+   blade/blade 23:32:34.7-35.9: the Lauda module still set ForcedTarget (LaudaTargetPolicy) while RSR chose its own target -
+   the same fight 7.5.7.539 removed everywhere else. At 23:32:20.9 BMR dropped blade 876 (1,886 HP, flagged PendingDead) for
+   blade 877; the player walked to 877 and 876 survived at 620 HP.
+   FIX (BMR): Lauda module sets priorities only for BST (no ForcedTarget / own goal); SecondMasterCombatHints moves to RSR's
+   target. FIX (RSR): SecondMasterTargetPolicy ranks Magicked / Indefatigable Blades 3; ties prefer the current target, then
+   lowest HP.
+
+3. GLUTTONOUS GUTTING - attempt 6 analysis was wrong, 540 change reverted
+   Gutting hits LAUDA'S CURRENT TARGET wherever it stands: 22:39 Lauda on player -> player 1,722 + Vuln Up; 23:11 and 17:24
+   Lauda on Behemoth -> Behemoth 2,915 / 3,186 while the player stood in the "rect" untouched. The 540 pocket choice (start
+   in the pocket whose landing avoids the rect) was based on a wrong reading and would only add a 45y run; removed in 541.
+   In 22:39 Snarl cover (2413) was gained 23:01:48.5 but RSR's take-back Challenge removed it at 23:01:49.5.
+   FIX (RSR): SecondMasterDefensePolicy covers Lauda's boss cast 49445 (Snarl held through the hit; take-back suppressed
+   during the hold, as for the First Master busters).
+
+4. SEARING AXE
+   Pulses this run 59-108 (22:39 run: 111-201). The player went in at 2,909 -> died after 26s of pulses. Fixed timer
+   (~174s into Lauda); the lost melee uptime from (1) and (2) is the main reason Lauda is still at ~40% there.
+
+CHANGES (built and tested, NOT validated live)
+  BMR 7.5.7.541: AutoAttack AI hint off for BST; Lauda no ForcedTarget for BST; 540 Gutting pocket logic removed.
+  RSR 7.5.7.145: blade priority + finish-current/lowest-HP tie-break; Gutting cover.
+  Tests: PASS 1379. BMR 0 errors (6 usual warnings).
+
+STILL OPEN: Thanatos Infernal Pain Vulnerability Up; spare big slime at Gigantis (Rupture still landed once); heal stock
+for Searing Axe; Drake/Durga idle.
+
+DEPLOYED 2026-11-13 23:41:20 (hashes verified): RSR 7.5.7.145 (backup backups\RSR-before-blades-guttingcover-20261113-234119, 7.5.7.144),
+BMR 7.5.7.541 (backup backups\BossModReborn-before-laudanoforce-20261113-234119, 7.5.7.540).

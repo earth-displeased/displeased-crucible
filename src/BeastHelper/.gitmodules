@@ -1,0 +1,3 @@
+[submodule "src/BeastNav/theme"]
+	path = src/BeastNav/theme
+	url = https://github.com/Rin-0617/RinUi

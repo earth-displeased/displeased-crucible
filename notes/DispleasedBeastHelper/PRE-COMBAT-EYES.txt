@@ -1,0 +1,11 @@
+BEASTHELPER 0.2.23 - PRE-COMBAT LOOT AND TOKEN EYES
+Two independent checkboxes under Crucible > automatic item controls:
+- Automatically use Thief's Eye before combat (loot)
+- Automatically use Merchant's Eye before combat (territory tokens)
+Both enabled initially, as requested. Each can be disabled independently.
+
+After a live enemy is identified and event/zoning/stop checks pass, preparation runs before automated approach/RSR enable. Scans held Crucible items using existing native inventory/hotbar mapping; requests the missing boost on the player. Existing Winners Keepers (4855) or Token Benefits (4856) buff skips that item. Missing items do not pause combat. Eye100/action46983 is Thief; eye101/action46984 is Merchant. Status names verified from local game data; Thief application also observed in older recording.
+Shared item timing respected. Up to two requests per eye, six-second confirmation window per eye, then warning and proceed instead of freezing. No automatic purchasing, reward choice, board entry or fight-start click added. Emergency stop respected. Existing no-item First/Second Board score restrictions block this preparation; Third Board item-enabled mode allows it.
+
+Validation: build zero warnings/errors;1178 roster/rotation/preparation checks. Live inventory consumption/buff confirmation still needs first live verification. DLL/manifest backed up and installed with hash-equivalent byte verification.
+RSR7.5.7.129 and BMR7.5.7.528 unchanged.

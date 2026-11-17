@@ -1,0 +1,13 @@
+THIRD BOARD ATTEMPT 2 - YMIR ATTRITION REVIEW
+Recording: ThirdBoardOfTheUnbroken_BST50_Ta_Be_U_2026_11_07_21_48_00.log
+Cavalier cleared. Ymir combat began about 21:51:10; player died at 21:52:29.94. This recording did not reach Catoblepas.
+Observed familiar sequence: Damselfly gone at 21:51:18.83, Mantis at 21:51:26.72, Wespe at 21:51:31.26. The early exposed-body Final Sting exception spent the remaining familiar approximately 21 seconds into the fight. Ymir body fell to ~28.5% HP but re-shelled; Sahagin still had ~34% HP near death.
+Player damage: Dreadwash about 859 at 21:52:09.43; Blanket Thunder about 733 at 21:52:17.23; intervening and subsequent auto-attacks exhausted the remaining HP. This was sustained unavoidable damage, not the previous Catoblepas gaze. Healing remained enabled at 60%, but no recovery-item use was recorded in Ymir. Inventory availability/cooldown cannot be established from the current item log alone.
+Corrections installed: BeastHelper 0.2.21.0 / BMR 7.5.7.525 / RSR 7.5.7.125.
+- Removed the early exposed-Ymir Final Sting exception. Keep a healthy Wespe while both Ymir and Sahagin remain alive; permit a finisher if the familiar becomes critically low, or once one boss is dead. Never spend it on a shell.
+- Request Snarl during Dreadwash or Blanket Thunder while a familiar is present, retaining cover through cast resolution rather than immediately undoing it with Challenge. Actual defensive timing still needs live validation.
+- Narrowed player area-attack collateral checks: eggs and spiked Sahagin remain unsafe; harmless splash against armored Ymir no longer blocks shell attacks. Basic axe combo actions are single-target, so this filter was not the main explanation for lost damage.
+- Healing-needed status is no longer overwritten by Waiting when no healing item can currently be used. Check duty inventory and cooldown rather than assuming a potion is available.
+Unchanged: exactly three beasts; current Vilekin trio; manual shops, rewards, entry, tiles and battle starts; BMR AI OFF and BeastHelper dodge ON. Earlier gaze and knockback margin fixes retained. Exposed Ymir body priority retained.
+Verification: all three builds passed; fixed-trio/reserve tests passed; 307 BMR policy/geometry checks passed; all eight encounter modules passed initialization and target/navigation smoke checks. Offline checks do not prove a successful live run.
+Emergency stop: /beasthelper stop.

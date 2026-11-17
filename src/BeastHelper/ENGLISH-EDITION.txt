@@ -1,0 +1,109 @@
+BeastHelper English - local edition based on Rin's v0.2.0
+
+English edition v0.2.8: movement setup uses BMR NormalMovement Range=Any instead
+of MaxRange, preserving the calculated safe destination rather than clamping
+it into attack range. BMR preset ownership is checked every two seconds even
+when combat state does not change. Lost ownership / rejected movement strategy
+is reported rather than continuing to claim "dodging". It does not fight other
+plugins for ownership automatically; Refresh BMR movement setup explicitly
+recreates/reactivates the movement preset. Both UI modes show the active preset.
+vnavmesh diagnostics are labeled approach-only, since BMR controls movement in
+combat. This is not a new Treant encounter module or a guaranteed clear.
+Relevant upstream movement implementation:
+https://github.com/FFXIV-CombatReborn/BossmodReborn/blob/main/BossMod/Autorotation/MiscAI/NormalMovement.cs
+
+English edition v0.2.7: restores automatic duty-item actions in combat-only mode:
+recovery potions and HP threshold, self-buff items, attack items/fangs and custom
+item-use rules. Both mode layouts share the same controls and saved switches.
+Previous saved item switches are retained (not forced on or off). The item
+service runs in combat-only mode independently of Auto-enter, but retains its
+Crucible-territory, in-combat and living-player checks. Item statuses are included
+in the activity log. Menu/reward/shop/confirmation/start behavior is unchanged.
+
+English edition v0.2.6: fixes target selection to require BattleNpcSubKind.Combatant
+and reject dead/untargetable actors; this excludes Pet/Buddy/friendly-partner kinds
+that the old BattleNpc-only check could track (the reported log tracked Squirrel).
+Cancels the approach request once on combat hand-off so vnavmesh's retries do not
+compete with BMR movement. Actual in-combat positioning still relies on BMR or
+the player; no blind chasing fallback is added. Diagnostics report BMR module
+availability separately from the enabled dodge setting, plus player HP/death.
+Adds an enabled-by-default, switchable RSR recovery policy: if BeastHelper
+requested Auto and RSR reports inactive for five seconds in a live fight, retry
+up to three times in that combat period. No retries for missing IPC, death,
+zoning or event pauses. Disable Automatic combat to intentionally stop RSR.
+Root cause of RSR turning inactive in the submitted log remains unconfirmed.
+
+English edition v0.2.5: adds Leveling - class min/max to both roster menus.
+Select exactly three distinct captured beasts of one classification, minimizing
+the SUM of current synced ranks. First choose each classification's three lowest
+ranks, then compare totals. Ties prefer the lower maximum rank, then the lower
+classification ID; beast ties use bestiary row ID. It never fills spare slots.
+Missing/invalid synced ranks or classifications pause this mode rather than
+guessing. Existing enum values and other roster algorithms are preserved.
+The preview shows classification, trio, ranks and total. Optional "Read all
+ranks while bestiary is open" allows the existing notebook scan when explicitly
+enabled. It never opens the bestiary itself and will not scan during party setup.
+Classification comes from the live generated schema when available, otherwise
+an identity-checked reference map for the original 50 beasts. Unknown identities
+remain unknown. Reference sources are linked in Models/BeastClassifications.cs.
+Whistles wait until all three roster choices have landed. Combat-only mode still
+leaves Start Battle, rewards, shops, item use and confirmations manual.
+Verified selector against 500 exhaustive triple-search scenarios, missing ranks,
+duplicate/input ordering, classification identity guards and saved mode IDs.
+
+English edition v0.2.4: live heartbeat, target/distance/HP/cast-ID snapshot,
+navigation state, requested vs reported RSR state, 15-second no-observed-progress
+warning, and last-150-changes activity log with Copy/Clear. Changes also go to
+Dalamud logs. Repeated frames are deduplicated. The indicator reports update-loop
+health, not proof of attacks. RSR's full ability decisions are not available;
+observed cast IDs can omit instant abilities. Logs are in memory until copied
+or recorded by Dalamud; restarting clears the UI history.
+Fix: restore navigation Update in combat-only mode (previously bypassed), and
+avoid resetting the approach request each frame. Unhandled RSR commands retry
+at most once per three seconds. No reward or menu policy changes.
+
+English edition v0.2.3: combat-only mode now includes a separate "Automatic
+beast selection (roster + whistles)" checkbox, ON by default. It provides the
+three existing roster modes and a board-capacity selector. Whistle assignment
+waits for the roster to finish. Start Battle stays manual in combat-only mode,
+even when the legacy combined whistle/start setting is enabled. Entry, rewards,
+shops, item use and confirmations remain bypassed. Read-only bestiary sync runs;
+automatic bestiary page clicking remains disabled in this mode.
+
+English edition v0.2.2: adds "Combat only - manual menus and rewards", ON by
+default for new and existing configurations. With it checked, only the combat
+and optional BMR dodge services run. Auto-entry is no longer required for RSR
+in this mode. All menu/reward/shop/roster/whistle/start/confirmation/item-use
+services are bypassed; pending scripts/navigation are cancelled. Saved switches
+are preserved. Unchecking the option restores the previous automation settings.
+
+English edition v0.2.1: recognizes English loot confirmations, including
+"You will receive: ... Proceed?", and English shop purchase/exit prompts.
+Loot/shop confirmation requires a recent action by the corresponding service
+and its associated screen to remain visible. Unrecognized prompts are left for
+manual confirmation. Japanese prompt recognition is retained.
+Regression checks: 12 English/Japanese and unrelated prompt recognition cases.
+
+Translated main controls, explanatory tooltips, roster modes, board labels,
+treasure categories, shop settings, item rules, item labels, service statuses,
+capture destination labels and diagnostic controls. Widened the main window
+and dropdowns for English text. Item names are descriptive translations and
+may differ from official English game names. Existing user-authored rule names
+and destination labels are not rewritten.
+
+Original source: https://github.com/Rin-0617/BeastHelper
+Base commit: see BUILD-INFO.txt in the distribution.
+Original author: Rin. English edition prepared locally with Codex.
+License: GNU AGPL v3; see LICENSE. The bundled RinUi source retains its LICENSE.
+The matching source code is supplied in BeastHelper-English-source.zip.
+
+The English edition keeps the original assembly/internal name and command
+(/beasthelper) to preserve configuration compatibility. Disable the original
+plugin before loading this local build. Do not run both simultaneously.
+This is a local development-plugin installation, not an automatic-update repo.
+The upstream repository URL in metadata identifies the original project.
+
+This translation preserves the original automation logic and limitations.
+It does not add fight coverage, guaranteed clears or automatic board traversal.
+Verified: .NET 10 Release build with Dalamud SDK 15, zero warnings/errors.
+Not verified: live in-game loading, appearance and encounter behavior.

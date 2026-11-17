@@ -1,0 +1,18 @@
+Siren Shield Charge review - November 9, 2026
+Replay: ThirdBoardOfTheUnbroken_BST50_Ta_Be_2026_11_08_23_56_33.log
+
+Three Shield Charges were spent against Siren at 00:11:32, 00:11:38 and 00:11:39, before Summon. First adds appeared 00:12:22. No Shield Charge fired during that wave. Bind applied 00:12:26; Crawling died 00:12:38, about 16 seconds after spawning. Player died 00:12:43 and revived 00:12:46. The revival allowed the attempt to continue but did not solve the add pressure.
+
+Second wave spawned 00:13:42. Shield Charge hit Crawling at 00:13:42.55 and Parting Blow followed 00:13:44.56. Crawling died 00:13:45.24, under three seconds after spawning; no second Bind was recorded. This comparison supports reserving charges, but does not attribute the entire improvement to Shield Charge alone.
+
+The player later died at 00:14:55 with Siren's last recorded HP 28,713/84,698. Siren direct damage across the encounter: 4,587 autos, 2,065 Song of Torment; zombie autos 1,805 and Wallop 860. No Sweet Song Burst player damage recorded. Faster add cleanup and preserving charges addresses only part of the sustain problem.
+
+Installed RSR 7.5.7.133:
+- Third Board Siren only: no Shield Charge as ordinary boss-only damage, even at full charges.
+- Prioritize an eligible Crawling target. Spend spare charges; permit the final charge while bound or at/below 40% player HP.
+- With no Crawling target, spend spare charges only when predicted to hit at least two Shambling zombies. Permit the final charge for that cluster at/below 40% HP.
+- Otherwise hold one charge for the next wave. If no charge is ready, normal attacks continue.
+- Existing native targeting/range/collateral checks and normal BMR dodging remain. This is not a newly implemented emergency-dash dodge predictor.
+- Other encounters unchanged.
+
+Validation: RSR build passed without warnings/errors; 1,229 policy checks passed, including ten new Siren charge scenarios. Needs live verification; no guaranteed clear.

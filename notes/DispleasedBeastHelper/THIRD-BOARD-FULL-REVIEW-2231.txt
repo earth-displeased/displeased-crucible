@@ -1,0 +1,49 @@
+THIRD BOARD FIRST DEGREE - FULL RECORDING REVIEW
+Recording: ThirdBoardOfTheUnbroken_BST50_Ta_Be_2026_11_08_22_31_21.log
+Reviewed replay plus Dalamud diagnostics. Recording ended 22:52:41 Pacific, November 8, 2026.
+Exactly Cu Sith, Buffalo and Coeurl. Manual shops, rewards, entry and fight starts retained.
+
+OVERALL
+Five fights occurred: Cavalier, Ymir/Sahagin, Catoblepas, Lakhamu, Siren. Zu, Campeador and Guttler were not fought in this recording; no live conclusion about those encounters is possible from it.
+This failure differs from the prior recording: the player took no recorded Sweet Song Burst damage. Siren still had 45,262/84,698 HP (53.4%) at the last HP update. Player died at 22:52:25 after accumulated ordinary attacks, a second Crawling Bind and Wallop. Lost familiar damage and remaining adds lengthened the fight.
+Damage totals below are raw direct action-effect values, including blocks/parries, not a complete accounting of HP changes, periodic damage, shields or overkill. A familiar actor marked dead after Parting Blow is a dismissal, not proof the roster beast was incapacitated.
+
+1. CAVALIER, 22:31:51-22:33:56
+Clear. Player ended 2,710/5,224 HP. Direct damage: 22 Cavalier autos (2,512), 30 Bishop Blizzard hits (1,266), two Crushing Blades (744). No recorded player hits from clone circles/lines or Steelripper. One G3 potion restored 1,929 HP. Cu Sith took no direct damaging effect in this fight.
+Improvement: urgent Bishops must remain valid attack centers before area-hit optimization. Killing them sooner reduces sustained Blizzard damage. Do not change successful clone positioning merely because ordinary damage remains.
+
+2. YMIR + SAHAGIN, 22:39:05-22:40:57
+Clear. Player ended 823/5,224 HP (15.8%). Direct damage: Sahagin autos 681, Ymir autos 502, two Tsunamis 704. No Water II hit or bleed-border status recorded. Tsunami is a planned knockback and its damage alone does not prove failed dodging. One Water Fang and one Reflection Tome were used; no healing potion was usable afterward.
+Cu Sith was deliberately dismissed for Buffalo. Buffalo later truly died after Dreadwash, autos and Blanket Thunder; these must not be conflated with that Cu Sith dismissal. Buffalo took 844 Dreadwash and 823 Blanket Thunder damage, plus sustained autos. Coeurl finished alive near 1,998 HP.
+Improvement: do not automatically assign incoming heavy casts to a weakened familiar when the player can survive taking them. Critical-player emergency cover remains available. Preserve the exposed-Ymir and protected-Sahagin rules.
+
+3. CATOBLEPAS, 22:43:21-22:45:30
+Clear. Entered near 823/6,112 HP, healed immediately with G3, then G1. Ended 1,526/6,112. Player took 15 autos (786) and two Bestial Roars (1,373); no eye explosion, gaze petrification or Sinister Gleam player hit recorded. Cu Sith was deliberately dismissed near 60% HP; Coeurl ended near 914/2,595 after 805 Roar damage plus autos.
+Improvement: prepare held recovery before automated approach rather than waiting until combat begins at 13.5% HP. Keep the successful eye/gaze handling. Low health here was resource attrition, not evidence of an unhandled eye explosion.
+
+4. LAKHAMU, 22:46:18-22:48:29
+Clear. Player ended 1,347/6,373 HP (21.1%), with no healing item held. Direct damage: boss autos 1,061, Golem autos 443, Landslip 497, Sand Tempest 503, Earthshaker 254. Landslip is a planned knockback. No player Burst/Rockslide/Earthrender hit recorded. Blind applied, but inventory had only G1 Reraiser and Temporal Sand, neither a cure.
+Coeurl truly died at the later Earthshaker sequence; four direct damage effects totaling 1,474 were recorded. Some can be damage redirected by Snarl, so it would be incorrect to describe every effect as avoidable overlap. Generic party bait protection did not explicitly include the owned familiar.
+Improvements: choose priority Golems before area-hit scoring; add owned-familiar exclusion to player Earthshaker bait positions; avoid unnecessary heavy-cast redirection onto weak familiars. Geometry changes reduce overlap, but cannot prevent damage deliberately transferred by Snarl.
+
+5. SIREN, 22:50:04-22:52:26
+Failure. Entered at 1,347/6,791 HP (19.8%); last G3 healed 2,794 HP. Cu Sith entered with only about 1,297 HP, took 961 Song of Torment plus autos, and died near 22:50:19. No familiar remained afterward.
+Direct player damage: Siren autos 2,820, zombie autos 993, one Wallop 396. No Sweet Song Burst, Feral Lunge or Dirge hit recorded. Second Bind applied around 22:52:19, followed by several zombie attacks and Wallop. Shield Charges at 22:52:14 and 22:52:17 targeted a Shambling zombie, not the binding Crawling add. Area-center optimization had discarded the urgent target before encounter priority was considered.
+Inventory diagnostics repeatedly confirmed a usable G1 Reraiser (item 98), Temporal Sand unusable in combat, and no healing items. No Crimson Ribbon was detected in the owned-gear HUD. It is not evidence that a usable serum was being ignored.
+Improvements: fix priority selection before area-hit optimization; preserve weak Cu Sith from automatic heavy-cast cover; use held G2/G1 Reraiser as last-resort survival fallback when healing/other defenses are unavailable and Reraise is not already active. G1 revival chance is 70%, G2 95%; neither guarantees a clear.
+
+INSTALLED CHANGES
+BeastHelper 0.2.27.0:
+- New enabled checkbox: Prepare available recovery before automated approach. Applies after manual battle start, before approach, at the user's existing recovery threshold. Native usability and target checks apply. Maximum eight-second preparation window prevents a failed item request from blocking combat indefinitely. Continues when nothing is usable.
+- Existing enabled emergency-defense fallback now includes G2/G1 Reraiser last, only on the player and only without active Reraise. Does not use encounter-reset sand.
+RSR 7.5.7.132:
+- Highest encounter-priority valid enemies are retained before area-center optimization. Includes Crawling, Bishops and Golems. Native range/collateral checks retained. Snarl and Challenge excluded from this offensive restriction.
+- Automatic heavy-cast cover requires familiar HP at least 60%, unless player is critically low (30% or less). Retains emergency sacrifice to prevent immediate player death.
+BMR Crucible Assist18 7.5.7.530:
+- Lakhamu player-bait positioning explicitly avoids directing Earthshaker through an owned familiar, using its hitbox margin.
+
+SETTINGS / RESOURCE LIMITS
+Saved player healing threshold is 39%, familiar threshold 50%. Those user settings were preserved; the earlier claim that it was currently 60% was incorrect. More available healing is still needed: the recorded inventory was empty of usable healing through much of Catoblepas/Lakhamu/Siren. Automation cannot substitute an item that is not held. Reraise helps recover from failure but is not damage mitigation and is not guaranteed. Shops/rewards remain manual.
+
+VALIDATION
+BeastHelper and RSR build without warnings/errors. BMR builds with six existing unrelated obsolete API warnings. 1,219 policy checks and 315 existing production/policy geometry checks passed. All eight Third Board modules initialized and navigation/targeting checks passed. Added production Lakhamu fixture verifies a cone toward an owned pet is forbidden while an opposite-side bait is allowed. Replay movement simulation ran, but does not model changed add kills, Snarl damage transfer, Bind movement restrictions, or altered enemy behavior; it is not a live-clear guarantee.

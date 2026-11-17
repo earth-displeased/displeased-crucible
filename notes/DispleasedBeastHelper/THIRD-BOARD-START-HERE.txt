@@ -1,0 +1,24 @@
+THIRD BOARD - BEASTKIN CLEAR
+BeastHelper 0.2.22.0 + paired RSR 7.5.7.127; BMR 7.5.7.526.
+
+Outside the duty, open BeastHelper > Crucible. Click:
+Prepare Third Board - Beastkin trio / First Degree
+This replaces the saved Vilekin profile with exactly Cu Sith, Buffalo and Coeurl.
+Capture all three first and aim for rank 15 on each.
+Check the roster preview and RSR Beastkin clear: connected status.
+The rotation uses the registered horn identities; it does not assume a species is in a particular horn number.
+
+Choose Third Board and First Degree manually. Enter and commence battles manually.
+BMR AI OFF; BeastHelper dodge ON; paired RSR Auto.
+Buy items and take rewards manually. Recovery potions enabled at 60% HP and attack items enabled.
+Tile movement, shops, reward choice and confirmations remain manual.
+If automation was stopped, deliberately resume it through BeastHelper before fighting.
+Emergency stop: /beasthelper stop
+
+The rotation starts Cu Sith for Borrow/Beastskin, cycles Coeurl for damage,
+and prepares Buffalo near Ymir's shell break for its stun window.
+Pet command completion is protected from early dismissal. Pet commands may target
+spiked Sahagin while player attacks still avoid reflected hits.
+
+Builds and 1152 focused policy/regression checks passed. This Beastkin version
+has not yet been validated in a live complete Third Board run.

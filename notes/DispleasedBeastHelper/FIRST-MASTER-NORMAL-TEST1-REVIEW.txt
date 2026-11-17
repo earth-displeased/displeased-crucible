@@ -1,0 +1,33 @@
+FIRST MASTER NORMAL TEST 1 - FULLY AUTOMATED CLEAR
+Replay: FirstMastersBoard_BST50_Ta_Be_2026_11_10_21_41_25.log
+User confirms no manual combat intervention.
+Borgny defeated 22:00:52; player combat ended 22:00:54. No player death recorded.
+Normal difficulty only; this is not First Degree or Legendary validation.
+
+ENCOUNTER REVIEW
+Strix (21:42:08-21:43:25): finished 3,580/6,176 HP. Quakes/Floods effect entries did not contain direct damage to the player; do not count every effect event as a failed dodge. Darkness dealt 1,000; auto-attacks 1,596. No clear transformation failure established here.
+Corpse Flower (21:43:52-21:45:15): lowest 3,390/6,176; finished 3,560. Queen Hawk attacked the player seven times (427 total damage). No player direct target switch to Queen Hawk was recorded, so priority remains a future improvement; it died during the fight. One G3 potion used at 54.9% HP. One earth fang used.
+Gargoyle (21:46:14-21:48:30): lowest 3,396/6,176; finished 6,063. Sweeping Evisceration accounted for 1,268 damage. Multihit/tether mechanics require event-specific review; damage alone is not proof every hit was avoidable. Malady orb effects did not themselves show direct damage. One G4 potion used at approximately 55% HP.
+Treant (21:50:31-21:53:17): lowest/finish 604/6,176 (9.8%). Sapling survived roughly 61 seconds (21:51:23-21:52:24), dealing 6,593 damage through Stone. Biloko completed six Natural Nurture heals, restoring 21,354 boss HP, and was never the player's direct attack target. Slugs contributed 1,099 auto-attack damage plus 603 from Aqueous Discharge; Treant autos 1,948, Rustling Breeze 540, Acorn Bomb 399. The player remained at roughly (123.4,-419.8) for an extended interval while adds remained alive. These are the main survival/targeting gaps.
+Treant recovery: G1 potion at 54.2%, G1 powder at 49.5%, Reflection requested at 50.3% after healing became unavailable. Logs then show no usable healing item. The 55% trigger worked; raising it alone cannot replace depleted stock or kill neglected adds.
+Borgny (21:58:10-22:00:54): lowest 2,852/5,681; finished 2,927. Toxic Mass was targeted and killed 21:59:46. Most recorded direct damage was boss auto-attacks (8,508 across the fight), plus Toxic Vomit (2,023 across its two action IDs), Touchdown 384 and Toxic Breath 189. Sustain and reduced fight length remain important before First Degree.
+
+BEAST USAGE
+Cu Sith, Behemoth and Coeurl were all summoned repeatedly. Behemoth performed eight Meteors overall and one Thunderbolt; Coeurl performed eight Blasters. Pet actor dead/zero-HP flags can accompany dismissal; the nonzero HP before switching and subsequent healthy summons mean these flags must not be counted as confirmed familiar incapacitations.
+At Treant, Meteor landed at 21:50:48.523 and the first Slug spawned at 21:50:50.215, so the opening Meteor missed that wave by approximately 1.7 seconds. This is a remaining optimization, not fixed in this update. Do not claim an intelligent Behemoth/pet-health rotation yet.
+
+FOCUSED UPDATE INSTALLED
+BeastHelper 0.2.30.0 / paired RSR 7.5.7.134 / BMR 7.5.7.531.
+- Shared Treant priority: Sapling first, then Biloko (healing cast elevated within its tier), Diremite, Slugs, then boss.
+- BMR supplies the chosen add as the movement target and a melee-approach goal. Existing hazard avoidance remains in effect.
+- RSR applies matching priorities to action targeting and keeps urgent adds from losing primary-target selection merely because another AoE center hits more enemies. Existing range and collateral checks remain.
+- RSR changes require the opted-in First Master profile in First Master's Board. Other board modes retain their own policies.
+- First Master profile now has an explicit RSR integration signal and preserves Auto through between-fight behavior. Emergency stop remains honored.
+- No live configuration JSON edited. Current roster selection, manual menus and 55% recovery threshold remain as saved.
+- Meteor timing, Queen Hawk-specific action priority, pet-health rotation and broader Borgny changes are not included. This isolates the largest measured gap.
+
+VERIFICATION / NEXT TEST
+All three builds passed. BeastHelper and RSR zero warnings; BMR has six existing unrelated deprecated-API warnings.
+1,246 policy checks passed. A module-level scenario checks a distant Sapling before a healing Biloko, then Slug, then boss, including movement goals. All ten First Master modules initialize.
+2,551 recorded navigation frames were evaluated; 661 were Treant. Updated replay hints chose Sapling while alive, Biloko after Sapling died, and generated an approach destination during the previously stationary interval. This re-evaluates recorded positions; it does not simulate new damage, action timing, kills or guarantee a clear.
+Next: repeat Normal with the same three beasts and replay recording. Look for faster Sapling/Biloko kills, fewer Natural Nurture completions and higher Treant exit HP. Keep healing stock for the final boss. First Degree remains unvalidated.

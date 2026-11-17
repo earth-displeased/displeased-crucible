@@ -1,0 +1,12 @@
+FIRST DEGREE NEXT ATTEMPT - FIVE-CLONE MENACE FAILURE
+Recording ThirdBoardOfTheUnbroken_BST50_Ta_Be_2026_11_08_17_26_12.log.
+Cavalier cleared 17:29:38. Five clones used simultaneous Menace at 17:29:34.560. Player was at (124.07,9.44), inside three of five circles. Damage 714+562+697=1973; HP fell 2880 to 907 and ended Cavalier at 646/5224 (12.4%).
+Ymir entered without recovery. Cu Sith started at 436/2676. Player died 17:36:59, revived 17:37:02, then died again 17:37:41 after Blanket Thunder dealt 851. Dreadwash earlier dealt 697. No recovery item was usable during Ymir. The potion used earlier in Cavalier was a G3 potion at 17:28:52.
+
+Root problem: five-circle Menace fully covers the legal arena. Existing navigation had no completely safe pixel and stalled inside triple overlap. This is a mitigation case, not a promise of a zero-damage dodge.
+Installed BMR 7.5.7.527 (Crucible Assist 15): for the opt-in Third Board five-circle pattern only, select an interior corner region with one unavoidable circle and avoid the other four. Normal dodge behavior retained for other patterns. Emergency-stop behavior retained.
+
+Validation: build passed (six existing unrelated obsolete-API warnings); 313 BMR policy/geometry checks passed. Movement replay simulation of the actual volley took one circle instead of three. This does not prove a live clear or reproduce changed boss aggro.
+BeastHelper remains 0.2.22.0; RSR remains 7.5.7.127. Same Cu Sith/Buffalo/Coeurl roster.
+Before continuing after a badly damaged fight, manually recover/restock where available. The automation does not shop, collect rewards, enter, or start fights on your behalf.
+Longer-term priorities: earlier boss/add burst to avoid five-clone escalation, cast-timed defenses beyond Ymir, and clear pre-fight player/pet health and recovery-supply warnings. These are not included in this BMR-only correction.

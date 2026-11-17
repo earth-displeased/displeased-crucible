@@ -1,0 +1,9 @@
+BeastHelper English 0.2.11 - First Board score mode
+Open /beasthelper > Crucible, outside a Crucible duty. Enable First Board - score mode (3 beasts / one family / no items).
+Choose Automatic (estimated strength) or a specific family. If ranks are missing enable Read ranks from the open bestiary and open the bestiary manually.
+Review the proposed trio. Enter FIRST BOARD manually, open roster/whistle setup and wait for Roster ready(3/3). The exact trio locks and is saved; rank changes cannot rotate it. Whistles assign automatically. Start battles and move between tiles manually.
+All BeastHelper duty-item paths including custom rules are blocked. Automatic entry, rewards, shops, scripts and AutoDuty are bypassed. Decline rewards, gear, feed and campsites yourself; do not click Take All. RSR's separate HP/MP potion settings were off at deployment and must remain off. BMR AI must be OFF; RSR handles actions and BeastHelper's movement-only BMR preset handles dodges.
+Combat pauses until the exact roster was verified during this plugin session. If reloaded mid-run, reopen roster setup before continuing. Combat and movement are scoped to First Board while mode is active.
+Use Choose a new trio for the next run outside the duty to unlock selection. Disable score mode or use Prepare Second Master's Board to switch back. Item switches stay off until explicitly changed.
+Automatic trio selection estimates strength using synced rank capped at 5, static tier and stats; it does not evaluate beast abilities or guarantee the mathematically highest score. Further fight/health optimization needs recorded runs. No game score, damage or rewards are altered.
+Validation: build zero warnings/errors; 19 score-policy checks and existing RSR/movement recovery checks pass. Live score run pending.

@@ -1,0 +1,36 @@
+RESURRECTION — SECOND RECORDING REVIEW AND FIRST AUTOMATION TEST
+Recorded November 6, 2026, 20:27:55 to 20:30:36 Pacific. Two attempts.
+
+CONFIRMED IMPROVEMENTS
+The filename has _U without _LS: Unrestricted Party enabled, Level Sync disabled.
+Basic Instinct appeared and maximum HP was 32,888. Healer Mimicry and Mighty Guard were present. Pom Cure and Diamondback were used.
+Normal duty identifiers: territory 849, CFC 653, Eden Prime OID 0x2499, NameID 8345, radius 3.5. These come from the local replay.
+
+ATTEMPT 1
+Spear cast starts 20:28:23.115.
+First Spear hit at 20:28:28.090: 11,271 damage.
+Diamondback becomes an observed status at 20:28:28.574: after the first hit.
+Second Spear hit at 20:28:29.557: 1,172 damage under Diamondback.
+Gravity at 20:28:38.349 deals 19,732 damage. Player had about 11,098 HP before it and dies at 20:28:39.324.
+Diamondback was still active around Gravity's action effect. It should not be treated as a substitute for preparing health against this damage.
+
+ATTEMPT 2
+First Diamondback covers both Spear hits, reducing them to 1,203 and 1,232. This confirms the defensive approach works when applied in time.
+Pom Cure heals the player to full before Gravity, and another Pom Cure recovers after it. This survives the earlier failure.
+The attempt reaches Vice and Virtue (17637 and 17636) and Flare (15767).
+At 20:30:10.102, two tank-Vice helper hits (17639) total 29,449 damage. The next observed Diamondback status starts at 20:30:10.761, after these hits.
+Later Spear cast starts 20:30:14.819. First hit at 20:30:19.778 is reduced to 1,201.
+Diamondback expires at 20:30:20.753. Second Spear at 20:30:21.244 is unprotected and kills the low-health player.
+The key issue is protection covering the entire sequence, followed by prompt healing, not merely seeing Diamondback active at some point.
+
+TEST 1 COVERAGE
+Separate opt-in Resurrection Normal solo-BLU component. Disabled by default.
+Automates the recorded opening: ordinary healing, MP recovery, permanent Mortal Flame confirmation, Breath of Magic refresh, Goblin Punch, Spear defense, Gravity health preparation, both recorded Vice variants, a conservative puddle-bait/avoidance rule, and movement under Flare before casting.
+Spear reserves the GCD, cancels filler casts, requests Diamondback early, holds while shielded, and re-evaluates defense if an earlier shield expires while Spear is still pending.
+The opener conserves GCDs until the first Spear; this deliberately delays damage.
+The movement rules are a first test, not replay-validated server movement. Puddle exclusion uses a conservative 6-yalm circle for 60 seconds; Flare goal is within 2 yalms of Eden's center, and arena movement stays within a conservative square centered at (100,100), half-width 19. These parameters still need live validation.
+
+HARD COVERAGE BOUNDARY
+The first unrecognized boss cast pauses automatic actions and movement, prints a local chat message, and shows a global encounter hint. Pure Light, Delta Attack, the moving orb phase, Guardian adds and later transitions are not automated yet.
+At that pause, turn BMR AI Off for manual play and keep recording. Do not treat this package as a full-clear bot.
+No automated entry, dialogue, loot or retries. The successful Goldor controller source is unchanged.
