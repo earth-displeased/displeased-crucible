@@ -10,6 +10,13 @@ experimental WIP modules). **Second Master's Board, Standard: Legendary reached 
 (Mindflayer -> camp -> Atomos), see `beasthelper\SECOND-MASTER-ATTEMPT9-REVIEW.txt`. Name new reviews
 `beasthelper\SECOND-MASTER-*-REVIEW.txt`.
 
+**BeastHelper is now "Displeased BeastHelper"** (since 0.3.0, 2026-11-16): `InternalName`/assembly
+`DispleasedBeastHelper`, commands `/dbh` and `/displeasedbeasthelper`, settings `pluginConfigs\DispleasedBeastHelper.json`.
+It can stay installed next to the official BeastHelper (Rin-0617), but only one should be enabled. IPC names stay
+`BeastHelper.*` (the official plugin has no IPC). The fork is on branch `displeased` in the BeastHelper clone
+(`origin` = Rin-0617/BeastHelper, so to take an official update run `git fetch origin` and `git merge origin/main`). RSR/BMR forks keep
+the official InternalNames (`RotationSolver`, `BossModReborn`) and replace the official plugins.
+
 ## Where things live
 | What | Path |
 |---|---|
@@ -20,10 +27,12 @@ experimental WIP modules). **Second Master's Board, Standard: Legendary reached 
 | Policy tests | `...\work\BeastHelper\tests\FirstBoardScore` (compiles policy files from all three plugins) |
 | .NET SDK (offline) | `...\work\dotnet\dotnet.exe`, packages `...\work\nuget-packages`, feed `...\work\feed`, config `...\work\NuGet.Config` |
 | Replays (BMR, compressed binary) | `%APPDATA%\XIVLauncher\pluginConfigs\BossModReborn\replays\FirstMastersBoard_*.log` |
-| Plugin diagnostics | `%APPDATA%\XIVLauncher\dalamud.log` (`[BeastHelper]`, `[First Master defense]`, `[First Master Treant]`, `[First Master Borgny]`) |
-| BeastHelper saved settings | `%APPDATA%\XIVLauncher\pluginConfigs\BeastHelper.json` – read only, never edit |
+| Plugin diagnostics | `%APPDATA%\XIVLauncher\dalamud.log` (`[BeastHelper]` / `[DispleasedBeastHelper]` from 0.3.0, `[First Master defense]`, `[First Master Treant]`, `[First Master Borgny]`) |
+| BeastHelper saved settings | `%APPDATA%\XIVLauncher\pluginConfigs\DispleasedBeastHelper.json` (pre-0.3.0: `BeastHelper.json`) – read only, never edit |
 | Replay analysis (Python) | `E:\Dalamud_Plugins\development\replay-tools\` (see its README; `pip install brotli`) |
 | Backups | `E:\Dalamud_Plugins\backups\` |
+| GitHub publishing repo | `E:\Dalamud_Plugins\displeased-crucible` → https://github.com/earth-displeased/displeased-crucible (public) |
+| Dalamud custom repo URL | `https://raw.githubusercontent.com/earth-displeased/displeased-crucible/main/pluginmaster.json` |
 
 Key code: RSR `RebornRotations\Limited Jobs\BST_Reborn.cs` and `Basic\Helpers\*Policy.cs`
 (FirstMasterDefensePolicy, TreantMeteorPolicy, BorgnyToxicMassPolicy); BeastHelper
@@ -47,7 +56,8 @@ $d = "$W\dotnet\dotnet.exe"; $cfg = @('-c','Release',"-p:RestoreConfigFile=$W\Nu
 & $d build "E:\Dalamud_Plugins\development\work\BossmodReborn-main\BossMod\BossModReborn.csproj" @cfg   # slow
 ```
 Expect zero errors; BMR has ~6 pre-existing deprecated-API warnings. Outputs:
-- BeastHelper: `src\BeastNav\bin\Release\BeastHelper.{dll,json,deps.json}`
+- BeastHelper: `src\BeastNav\bin\Release\DispleasedBeastHelper.{dll,json,deps.json}` (+ `MoonSharp.Interpreter.dll`;
+  ignore the stale `BeastHelper.json` there)
 - RSR: `RotationSolver\bin\Release\RotationSolver.{dll,json,deps.json}`
 - BMR: `BossMod\bin\Release\BossModReborn.{dll,json,pdb}`
 
@@ -58,8 +68,16 @@ Expect zero errors; BMR has ~6 pre-existing deprecated-API warnings. Outputs:
 4. Verify the copied files' hashes match the build output.
 `Install-BorgnyUpdate.cmd` does steps 2–3 for the staged Borgny build.
 
+## Publish to GitHub (other installs update from the custom repo)
+After a change is built, tested and deployed, run
+`E:\Dalamud_Plugins\displeased-crucible\Publish-Release.ps1` (`-SkipBuild` reuses the bin outputs, `-NoPush` for a local dry
+run, `-Notes "..."`). It snapshots all three sources plus notes and replay-tools into the repo, runs the policy tests,
+zips each plugin, rewrites `pluginmaster.json`, pushes and creates a `release-<yyyymmdd-hhmm>` GitHub release. Dalamud
+only offers an update when `AssemblyVersion` goes up, so always bump versions before publishing. Ask before publishing:
+it is public.
+
 ## Conventions (carried over from earlier work – keep them)
-- Bump `<Version>` on every change (BeastHelper also `src\BeastNav\BeastHelper.json` `AssemblyVersion`).
+- Bump `<Version>` on every change (BeastHelper also `src\BeastNav\DispleasedBeastHelper.json` `AssemblyVersion`).
 - Put decisions in pure `*Policy` classes and add `Check(...)` cases to `tests\FirstBoardScore\Program.cs`; add new
   policy files to `FirstBoardScore.csproj`. Base thresholds and timings on replay evidence and cite it in comments.
 - Gate First Master behavior to the First Master profile / territory 1342; never change other boards' behavior.

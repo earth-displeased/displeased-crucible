@@ -1,9 +1,9 @@
 {
   "Author": "The Combat Reborn Team",
-  "Name": "BossMod Reborn - Crucible Assist 18",
+  "Name": "Displeased BMR - Crucible Assist",
   "InternalName": "BossModReborn",
   "RepoUrl": "https://github.com/FFXIV-CombatReborn/BossmodReborn",
-  "Description": "Local experimental solo BLU: Goldor clear and Resurrection through orb overlap and Guardian adds. Later transition requires live validation.",
+  "Description": "Displeased fork of BossMod Reborn with Beastmaster Crucible board modules. Replaces the official BossMod Reborn (same InternalName and settings). Also includes local experimental solo BLU: Goldor clear and Resurrection through orb overlap and Guardian adds. Later transition requires live validation.",
   "ApplicableVersion": "any",
   "Tags": [
     "combat",

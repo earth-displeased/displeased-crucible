@@ -20,19 +20,19 @@
         "AcceptsFeedback":  true,
         "RepoUrl":  "https://github.com/earth-displeased/displeased-crucible",
         "IconUrl":  "https://raw.githubusercontent.com/earth-displeased/displeased-crucible/main/src/BeastHelper/images/icon.png",
-        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/DispleasedBeastHelper.zip",
-        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/DispleasedBeastHelper.zip",
-        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/DispleasedBeastHelper.zip",
+        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/DispleasedBeastHelper.zip",
+        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/DispleasedBeastHelper.zip",
+        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/DispleasedBeastHelper.zip",
         "IsHide":  false,
         "IsTestingExclusive":  false,
-        "LastUpdate":  1794890824
+        "LastUpdate":  1794892028
     },
     {
         "Author":  "The Combat Reborn Team",
-        "Name":  "Rotation Solver Reborn - Board Score Assist 4",
+        "Name":  "Displeased RSR - Board Score Assist",
         "InternalName":  "RotationSolver",
-        "AssemblyVersion":  "7.5.7.147",
-        "Description":  "Analyses combat information every frame and finds the best action.\n\nThis means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.\nThen, it will highlight the best action on the hot bar, or help you to click on it.\nIt is designed for `general combat`, not for savage or ultimate. Use it carefully.",
+        "AssemblyVersion":  "7.5.7.148",
+        "Description":  "Displeased fork of Rotation Solver Reborn with Beastmaster Crucible board logic (gated to the Crucible). Replaces the official Rotation Solver Reborn (same InternalName and settings).\n\nAnalyses combat information every frame and finds the best action.\n\nThis means almost all the information available in one frame in combat, including the status of all players in the party, the status of any hostile targets, skill cooldowns, the MP and HP of characters, the location of characters, casting status of the hostile target, combo, combat duration, player level, etc.\nThen, it will highlight the best action on the hot bar, or help you to click on it.\nIt is designed for `general combat`, not for savage or ultimate. Use it carefully.",
         "ApplicableVersion":  "any",
         "Tags":  [
                      "combat",
@@ -54,19 +54,19 @@
         "Punchline":  "Analyses combat information every frame and finds the best action.",
         "AcceptsFeedback":  true,
         "RepoUrl":  "https://github.com/earth-displeased/displeased-crucible",
-        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/RotationSolver.zip",
-        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/RotationSolver.zip",
-        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/RotationSolver.zip",
+        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/RotationSolver.zip",
+        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/RotationSolver.zip",
+        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/RotationSolver.zip",
         "IsHide":  false,
         "IsTestingExclusive":  false,
-        "LastUpdate":  1794890824
+        "LastUpdate":  1794892028
     },
     {
         "Author":  "The Combat Reborn Team",
-        "Name":  "BossMod Reborn - Crucible Assist 18",
+        "Name":  "Displeased BMR - Crucible Assist",
         "InternalName":  "BossModReborn",
-        "AssemblyVersion":  "7.5.7.542",
-        "Description":  "Local experimental solo BLU: Goldor clear and Resurrection through orb overlap and Guardian adds. Later transition requires live validation.",
+        "AssemblyVersion":  "7.5.7.543",
+        "Description":  "Displeased fork of BossMod Reborn with Beastmaster Crucible board modules. Replaces the official BossMod Reborn (same InternalName and settings). Also includes local experimental solo BLU: Goldor clear and Resurrection through orb overlap and Guardian adds. Later transition requires live validation.",
         "ApplicableVersion":  "any",
         "Tags":  [
                      "combat",
@@ -91,11 +91,11 @@
         "Punchline":  "Don\u0027t fail at raid mechanics anymore",
         "AcceptsFeedback":  true,
         "RepoUrl":  "https://github.com/earth-displeased/displeased-crucible",
-        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/BossModReborn.zip",
-        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/BossModReborn.zip",
-        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2047/BossModReborn.zip",
+        "DownloadLinkInstall":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/BossModReborn.zip",
+        "DownloadLinkUpdate":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/BossModReborn.zip",
+        "DownloadLinkTesting":  "https://github.com/earth-displeased/displeased-crucible/releases/download/release-20261116-2107/BossModReborn.zip",
         "IsHide":  false,
         "IsTestingExclusive":  false,
-        "LastUpdate":  1794890828
+        "LastUpdate":  1794892032
     }
 ]
