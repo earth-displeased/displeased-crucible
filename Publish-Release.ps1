@@ -108,7 +108,10 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'git push failed.' }
     $vers = ($master | ForEach-Object { "$($_.InternalName) $($_.AssemblyVersion)" }) -join ', '
     $body = if ($Notes) { "$Notes`n`n$vers" } else { $vers }
-    & gh release create $tag (Get-ChildItem $dist -Filter *.zip).FullName --title $tag --notes $body --target main
+    # Notes go through a file: PowerShell 5.1 mangles embedded quotes in native-command arguments.
+    $notesFile = Join-Path $dist 'release-notes.txt'
+    [IO.File]::WriteAllText($notesFile, $body, (New-Object Text.UTF8Encoding $false))
+    & gh release create $tag (Get-ChildItem $dist -Filter *.zip).FullName --title $tag --notes-file $notesFile --target main
     if ($LASTEXITCODE -ne 0) { throw 'gh release create failed.' }
     Write-Host "== Published $tag" -ForegroundColor Green
     Write-Host "   Custom repo URL: $raw/pluginmaster.json"
